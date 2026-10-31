@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { Download, FileArchive } from "lucide-preact";
+import { Download, FileArchive, RotateCcw } from "lucide-preact";
 import type { FileData } from "src/FormatHandler";
 
 import "./index.css";
@@ -28,9 +28,19 @@ interface ConversionResultsProps {
   files: FileData[];
   summary: string;
   zipName: string;
+  /** Names of input files that couldn't be converted */
+  failed?: string[];
+  /** Clears the selection and goes back to the upload page */
+  onStartOver?: () => void;
 }
 
-export default function ConversionResults({ files, summary, zipName }: ConversionResultsProps) {
+export default function ConversionResults({
+  files,
+  summary,
+  zipName,
+  failed = [],
+  onStartOver,
+}: ConversionResultsProps) {
   const [zipping, setZipping] = useState(false);
 
   const downloadZip = async () => {
@@ -50,10 +60,16 @@ export default function ConversionResults({ files, summary, zipName }: Conversio
       <h1>{t("conv.complete")}</h1>
       <p>{summary}</p>
 
-      <button className="results-zip" onClick={downloadZip} disabled={zipping}>
-        <FileArchive size={16} />
-        {zipping ? t("results.zipping") : t("results.zip", { n: files.length })}
-      </button>
+      {failed.length > 0 && (
+        <p className="results-failed">{t("results.failed", { files: failed.join(", ") })}</p>
+      )}
+
+      {files.length > 1 && (
+        <button className="results-zip" onClick={downloadZip} disabled={zipping}>
+          <FileArchive size={16} />
+          {zipping ? t("results.zipping") : t("results.zip", { n: files.length })}
+        </button>
+      )}
 
       <ul className="results-list">
         {files.map((file) => (
@@ -73,6 +89,13 @@ export default function ConversionResults({ files, summary, zipName }: Conversio
           </li>
         ))}
       </ul>
+
+      {onStartOver && (
+        <button className="results-start-over" onClick={onStartOver}>
+          <RotateCcw size={15} />
+          {t("results.startOver")}
+        </button>
+      )}
     </div>
   );
 }

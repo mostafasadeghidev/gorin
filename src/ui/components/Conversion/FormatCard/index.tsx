@@ -2,6 +2,7 @@ import type { ConversionOption } from "src/main";
 import FileIcon from "src/ui/components/FileIcon";
 import { Check } from "lucide-preact";
 import "./index.css";
+import { t } from "src/ui/i18n";
 
 interface FormatCardProps {
   conversionOption: ConversionOption;
@@ -9,6 +10,7 @@ interface FormatCardProps {
   selected: boolean;
   onSelect: (id: string) => void;
   advanced?: boolean;
+  suggested?: boolean;
   tabIndex?: number;
   onFocus?: () => void;
   onKeyDown?: preact.KeyboardEventHandler<HTMLButtonElement>;
@@ -20,6 +22,7 @@ export default function FormatCard({
   selected,
   onSelect,
   advanced = false,
+  suggested = false,
   tabIndex,
   onFocus,
   onKeyDown,
@@ -48,6 +51,7 @@ export default function FormatCard({
           <bdi className="format-card-ext">.{format.extension.toUpperCase()}</bdi>
           <span className="format-card-name">{format.name}</span>
         </div>
+        {suggested && <span className="format-card-suggested">{t("explorer.suggested")}</span>}
         <div className="format-card-check" aria-hidden="true">
           <span className={`format-card-check-inner ${selected ? "is-on" : ""}`}>
             <Check size={14} />

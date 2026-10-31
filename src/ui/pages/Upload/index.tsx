@@ -4,8 +4,6 @@ import { CurrentPage, LoadingToolsText, Pages } from "src/ui/AppState";
 import { goToUploadHome, SelectedFiles } from "src/main";
 import { Files, Layers, LockKeyhole, Sparkles, Upload } from "lucide-preact";
 import tippy from "tippy.js";
-import { PopupData } from "src/ui/AppState";
-import { openPopup } from "src/ui/PopupStore";
 import { CurrentLang, t } from "src/ui/i18n";
 import LanguageSelect from "src/ui/components/LanguageSelect";
 
@@ -46,18 +44,6 @@ export default function UploadPage() {
     if (!formatsReady) return;
 
     const files = Array.from(fileList);
-
-    const sameMime = files.every((file) => file.type === files[0].type);
-    if (!sameMime) {
-      PopupData.value = {
-        title: t("invalid.title"),
-        text: t("invalid.text"),
-        dismissible: true,
-        buttonText: t("common.ok"),
-      };
-      openPopup(() => uploadRef.current);
-      return;
-    }
 
     SelectedFiles.value = Object.fromEntries(
       files.map((file) => [`${file.name}-${file.lastModified}`, file]),

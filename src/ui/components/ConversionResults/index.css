@@ -25,6 +25,27 @@
     align-self: stretch;
   }
 
+  .results-failed {
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    color: var(--danger);
+    background: var(--danger-transparent);
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+  }
+
+  .results-start-over {
+    align-self: center;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border-secondary);
+
+    &:hover {
+      color: var(--text-primary);
+      opacity: 1;
+    }
+  }
+
   .results-list {
     list-style: none;
     padding: 0;

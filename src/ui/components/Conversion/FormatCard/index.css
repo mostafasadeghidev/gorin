@@ -36,6 +36,17 @@
     min-width: 0;
   }
 
+  .format-card-suggested {
+    flex-shrink: 0;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 14%, transparent);
+    white-space: nowrap;
+  }
+
   .format-card-check {
     flex-shrink: 0;
     margin-inline-start: auto;

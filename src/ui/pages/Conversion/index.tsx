@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback, useEffect, useRef } from "preact/hooks"
 import mime from "mime";
 import {
   ConversionOptions,
+  goToUploadHome,
   SelectedFiles,
   type ConversionOption,
   type ConversionOptionsMap,
@@ -11,7 +12,7 @@ import {
 import { Mode, ModeEnum } from "src/ui/ModeStore";
 import normalizeMimeType from "src/normalizeMimeType";
 import { getExt } from "src/common/index.ts";
-import type { FileFormat } from "src/FormatHandler";
+import type { FileData, FileFormat } from "src/FormatHandler";
 
 import ConversionHeader from "src/ui/components/Conversion/ConversionHeader";
 import FormatExplorer from "src/ui/components/Conversion/FormatExplorer";
@@ -19,13 +20,15 @@ import LoadingScreen from "src/ui/components/LoadingScreen";
 import Footer from "src/ui/components/Footer";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-preact";
 import { PopupData } from "src/ui/AppState";
-import { openPopup, popupOpen } from "src/ui/PopupStore";
+import { closePopup, openPopup, popupOpen } from "src/ui/PopupStore";
 import FileInfoBadge from "src/ui/components/FileInfo";
 import { ConversionInProgress, CurrentPage, Pages } from "src/ui/AppState";
 import { ProgressStore } from "src/ui/ProgressStore";
 import StyledButton, { ButtonVariant } from "src/ui/components/StyledButton";
 import ConversionResults, { downloadFile } from "src/ui/components/ConversionResults";
 import { t } from "src/ui/i18n";
+import { categoriesOf } from "src/ui/suggestions";
+import { changeExt, stripExt } from "src/common/index.ts";
 
 let previousSelection: {
   fileExt: string;
@@ -128,6 +131,68 @@ function getMatchingFromFormats(
   return matched;
 }
 
+/**
+ * Picks the input format for a file.
+ * In simple mode the exact extension + MIME match wins; otherwise only an unambiguous match is used.
+ */
+function detectInputOption(
+  options: ConversionOptionsMap,
+  file: File | undefined,
+  simple: boolean,
+): ConversionOption | null {
+  if (!file) return null;
+  const matching = getMatchingFromFormats(options, [file]);
+  if (!matching.size) return null;
+  if (!simple) return matching.size === 1 ? (matching.entries().next().value ?? null) : null;
+
+  const mimeCandidates = getMimeCandidatesForFile(file);
+  const ext = file.name.split(".").pop()?.toLowerCase() || "";
+
+  const uniqueFormats = new Set<string>();
+  for (const [format, handler] of matching) {
+    uniqueFormats.add(`${format.mime}|${format.format}`);
+
+    // chances are, this format is exactly what the user wants
+    if (ext === format.extension && mimeCandidates.includes(format.mime)) {
+      return [format, handler];
+    }
+  }
+  if (uniqueFormats.size === 1) return matching.entries().next().value ?? null;
+
+  return null;
+}
+
+/** Splits the selection into groups of the same kind of file (by extension), keeping order */
+function groupFiles(files: File[]): File[][] {
+  const groups = new Map<string, File[]>();
+  for (const file of files) {
+    const key = getExt(file.name).toLowerCase() || file.type || "?";
+    const group = groups.get(key);
+    if (group) group.push(file);
+    else groups.set(key, [file]);
+  }
+  return [...groups.values()];
+}
+
+/** Makes output names unique, since different inputs (photo.png, photo.heic) can map to the same name */
+function dedupeNames(files: FileData[]): FileData[] {
+  const used = new Set<string>();
+  return files.map((file) => {
+    let name = file.name;
+    const ext = getExt(name);
+    for (let n = 1; used.has(name); n++) {
+      name = ext ? changeExt(file.name, ext, `_${n}`) : `${stripExt(file.name)}_${n}`;
+    }
+    used.add(name);
+    return name === file.name ? file : { ...file, name };
+  });
+}
+
+interface ConversionJob {
+  files: File[];
+  option: ConversionOption | null;
+}
+
 function removeFile(key: string) {
   const { [key as keyof typeof SelectedFiles.value]: _, ...rest } = SelectedFiles.value;
   SelectedFiles.value = rest;
@@ -138,18 +203,6 @@ function addFiles(fileList: FileList | null | undefined) {
   if (!fileList || fileList.length === 0) return;
 
   const files = [...Object.values(SelectedFiles.value), ...Array.from(fileList)];
-
-  const sameMime = files.every((file) => file.type === files[0].type);
-  if (!sameMime) {
-    PopupData.value = {
-      title: t("invalid.title"),
-      text: t("invalid.text"),
-      dismissible: true,
-      buttonText: t("common.ok"),
-    };
-    openPopup();
-    return;
-  }
 
   SelectedFiles.value = Object.fromEntries(
     files.map((file) => [`${file.name}-${file.lastModified}`, file]),
@@ -175,30 +228,25 @@ export default function Conversion() {
 
   const matchingFromSet = useMemo(() => new Set([...matchingFrom].map(([f]) => f)), [matchingFrom]);
 
-  const autoSelectOption = useMemo<ConversionOption | null>(() => {
-    if (!matchingFrom.size) return null;
-    const isSimple = Mode.value === ModeEnum.Simple;
-    if (!isSimple) {
-      if (matchingFrom.size === 1) return matchingFrom.entries().next().value ?? null;
-      else return null;
-    }
+  const autoSelectOption = useMemo<ConversionOption | null>(
+    () => detectInputOption(allOptions, firstFile, Mode.value === ModeEnum.Simple),
+    [allOptions, Mode.value, firstFile],
+  );
 
-    const mimeCandidates = getMimeCandidatesForFile(firstFile);
-    const ext = firstFile.name.split(".").pop()?.toLowerCase() || "";
-
-    const uniqueFormats = new Set<string>();
-    for (const [format, handler] of matchingFrom) {
-      uniqueFormats.add(`${format.mime}|${format.format}`);
-
-      // chances are, this format is exactly what the user wants
-      if (ext === format.extension && mimeCandidates.includes(format.mime)) {
-        return [format, handler];
-      }
-    }
-    if (uniqueFormats.size === 1) return matchingFrom.entries().next().value ?? null;
-
-    return null;
-  }, [matchingFrom, Mode.value, firstFile]);
+  // Different kinds of files are converted group by group, each with its detected input format
+  const groups = useMemo(() => groupFiles(files), [files]);
+  const isMixed = groups.length > 1;
+  const groupsKey = groups.map((group) => getExt(group[0].name).toLowerCase()).join("|");
+  const mixedJobs = useMemo<ConversionJob[] | null>(
+    () =>
+      isMixed
+        ? groups.map((group) => ({
+            files: group,
+            option: detectInputOption(allOptions, group[0], true),
+          }))
+        : null,
+    [groups, isMixed, allOptions],
+  );
 
   const [step, setStep] = useState<ConversionStep>(() => {
     if (autoSelectOption) return "select-to";
@@ -210,9 +258,28 @@ export default function Conversion() {
 
   const [toOption, setToOption] = useState<ConversionOption | null>(null);
   const [isConverting, setIsConverting] = useState(false);
+  const [activeFrom, setActiveFrom] = useState<ConversionOption | null>(null);
+
+  const suggestFor = useMemo(() => {
+    if (mixedJobs) {
+      const categories = mixedJobs.flatMap((job) =>
+        job.option ? categoriesOf(job.option[0]) : [],
+      );
+      return { categories, exclude: [] };
+    }
+    if (!fromOption) return undefined;
+    return { categories: categoriesOf(fromOption[0]), exclude: [fromOption[0].extension] };
+  }, [mixedJobs, fromOption]);
 
   useEffect(() => {
     if (!firstFile || isConverting) return;
+
+    if (isMixed) {
+      setFromOption(null);
+      setStep("select-to");
+      setShowAll(false);
+      return;
+    }
 
     const remembered = previousSelection;
     const sameInput = remembered && remembered.fileExt === fileExt;
@@ -233,7 +300,7 @@ export default function Conversion() {
 
     if (!sameInput) previousSelection = null;
     setShowAll(false);
-  }, [firstFile]);
+  }, [firstFile, groupsKey]);
 
   useEffect(() => {
     if (fileExt && fromOption && toOption) {
@@ -269,6 +336,8 @@ export default function Conversion() {
   };
 
   const handleFromToClickFrom = () => {
+    // Mixed selections detect each group's input format automatically
+    if (isMixed) return;
     setStep("select-from");
   };
 
@@ -276,51 +345,38 @@ export default function Conversion() {
     setStep("select-to");
   };
 
-  const handleConvert = async () => {
-    if (!fromOption || !toOption || !firstFile) return;
+  const showResults = (outputs: FileData[], summary: string, failed: string[]) => {
+    if (outputs.length === 1) downloadFile(outputs[0].bytes, outputs[0].name);
+    PopupData.value = {
+      contents: (
+        <ConversionResults
+          files={outputs}
+          summary={summary}
+          failed={failed}
+          zipName={`converted-${toOption?.[0].extension ?? "files"}.zip`}
+          onStartOver={() => {
+            closePopup();
+            previousSelection = null;
+            goToUploadHome();
+          }}
+        />
+      ),
+      className: "results-popup",
+      dismissible: true,
+      buttonText: () => t("common.close"),
+    };
+    openPopup(() => actionRef.current);
+  };
 
-    setIsConverting(true);
-    ConversionInProgress.value = true;
-    setStep("converting");
-    ProgressStore.reset();
-    const abortController = ProgressStore.controller;
-
-    try {
-      const inputFileData = [];
-      for (const f of files) {
-        const buf = await f.arrayBuffer();
-        const bytes = new Uint8Array(buf);
-
-        if (
-          fromOption[0].mime === toOption[0].mime &&
-          fromOption[0].format === toOption[0].format
-        ) {
-          downloadFile(bytes, f.name);
-          continue;
+  const showFailure = (error: unknown) => {
+    PopupData.value = error
+      ? {
+          title: t("conv.errorTitle"),
+          text: t("conv.errorText", { error: String(error) }),
+          dismissible: true,
+          buttonText: t("common.ok"),
         }
-        inputFileData.push({ name: f.name, bytes });
-      }
-
-      if (inputFileData.length === 0) {
-        setIsConverting(false);
-        setStep("select-to");
-        return;
-      }
-
-      const fromNode = { handler: fromOption[1], format: fromOption[0] };
-      const toNode = { handler: toOption[1], format: toOption[0] };
-
-      const output = await window.tryConvertByTraversing(
-        inputFileData,
-        fromNode,
-        toNode,
-        abortController.signal,
-      );
-
-      if (!output) {
-        setIsConverting(false);
-        setStep("select-to");
-        PopupData.value = {
+      : {
           title: t("conv.failedTitle"),
           text: isAdvanced
             ? `${t("conv.failedText")} ${t("conv.failedAdvancedHint")}`
@@ -328,55 +384,93 @@ export default function Conversion() {
           dismissible: true,
           buttonText: t("common.ok"),
         };
-        openPopup(() => actionRef.current);
+    openPopup(() => actionRef.current);
+  };
+
+  const handleConvert = async () => {
+    if (!toOption || !firstFile) return;
+    const jobs: ConversionJob[] = mixedJobs ?? (fromOption ? [{ files, option: fromOption }] : []);
+    if (jobs.length === 0) return;
+
+    setIsConverting(true);
+    ConversionInProgress.value = true;
+    setStep("converting");
+    ProgressStore.reset();
+    const abortController = ProgressStore.controller;
+
+    const outputs: FileData[] = [];
+    const failed: string[] = [];
+    const paths: string[] = [];
+    let lastError: unknown = null;
+
+    try {
+      for (const job of jobs) {
+        const names = job.files.map((file) => file.name);
+        if (!job.option) {
+          failed.push(...names);
+          continue;
+        }
+        setActiveFrom(job.option);
+
+        const inputFileData = await Promise.all(
+          job.files.map(async (file) => ({
+            name: file.name,
+            bytes: new Uint8Array(await file.arrayBuffer()),
+          })),
+        );
+
+        // Already in the requested format, nothing to convert
+        if (
+          job.option[0].mime === toOption[0].mime &&
+          job.option[0].format === toOption[0].format
+        ) {
+          outputs.push(...inputFileData);
+          continue;
+        }
+
+        try {
+          const output = await window.tryConvertByTraversing(
+            inputFileData,
+            { handler: job.option[1], format: job.option[0] },
+            { handler: toOption[1], format: toOption[0] },
+            abortController.signal,
+          );
+          if (!output) {
+            failed.push(...names);
+            continue;
+          }
+          outputs.push(...output.files);
+          paths.push(output.path.map((c) => c.format.format).join(" → "));
+        } catch (e) {
+          if (e instanceof Error && e.name === "AbortError") throw e;
+          console.error(e);
+          lastError = e;
+          failed.push(...names);
+        }
+      }
+
+      if (outputs.length === 0) {
+        showFailure(jobs.length === 1 ? lastError : null);
         return;
       }
 
-      const summary = t("conv.summary", {
-        from: fromOption[0].format.toUpperCase(),
-        to: toOption[0].format.toUpperCase(),
-        path: output.path.map((c) => c.format.format).join(" → "),
-      });
+      const summary =
+        jobs.length === 1 && jobs[0].option && paths.length === 1
+          ? t("conv.summary", {
+              from: jobs[0].option[0].format.toUpperCase(),
+              to: toOption[0].format.toUpperCase(),
+              path: paths[0],
+            })
+          : t("conv.summaryMixed", { n: outputs.length, to: toOption[0].format.toUpperCase() });
 
-      if (output.files.length === 1) {
-        const [file] = output.files;
-        downloadFile(file.bytes, file.name);
-        PopupData.value = {
-          title: t("conv.complete"),
-          text: summary,
-          dismissible: true,
-          buttonText: t("common.ok"),
-        };
-      } else {
-        PopupData.value = {
-          contents: (
-            <ConversionResults
-              files={output.files}
-              summary={summary}
-              zipName={`converted-${toOption[0].extension}.zip`}
-            />
-          ),
-          className: "results-popup",
-          dismissible: true,
-          buttonText: t("common.close"),
-        };
-      }
-      openPopup(() => actionRef.current);
+      showResults(dedupeNames(outputs), summary, failed);
     } catch (e) {
       console.error(e);
-      if (e instanceof Error && e.name === "AbortError") {
-        // Don't show an error popup for manual cancellation
-      } else {
-        PopupData.value = {
-          title: t("conv.errorTitle"),
-          text: t("conv.errorText", { error: String(e) }),
-          dismissible: true,
-          buttonText: t("common.ok"),
-        };
-        openPopup(() => actionRef.current);
-      }
+      if (!(e instanceof Error && e.name === "AbortError")) showFailure(e);
+      // Don't show an error popup for manual cancellation
     } finally {
       setIsConverting(false);
+      setActiveFrom(null);
       ConversionInProgress.value = false;
       setStep("select-to");
     }
@@ -394,7 +488,7 @@ export default function Conversion() {
   };
 
   const canProceed =
-    step === "select-from" ? !!fromOption : !!fromOption && !!toOption && !!firstFile;
+    step === "select-from" ? !!fromOption : (isMixed || !!fromOption) && !!toOption && !!firstFile;
 
   return (
     <div className="conversion-body">
@@ -405,7 +499,7 @@ export default function Conversion() {
           <LoadingScreen
             fileName={firstFile?.name || "file"}
             fileSize={firstFile?.size}
-            from={fromOption?.[0]}
+            from={(activeFrom ?? fromOption)?.[0]}
             to={toOption?.[0]}
           />
         ) : (
@@ -437,6 +531,8 @@ export default function Conversion() {
             onClickTo={handleFromToClickTo}
             showAll={showAll}
             onShowAll={() => setShowAll(true)}
+            suggestFor={suggestFor}
+            fromLabel={isMixed ? t("explorer.mixedInput", { n: groups.length }) : undefined}
           />
         )}
       </main>
@@ -479,7 +575,7 @@ export default function Conversion() {
             </button>
             <input ref={addFileRef} type="file" multiple hidden onChange={handleAddChange} />
           </div>
-          {step === "select-to" && (
+          {step === "select-to" && !isMixed && (
             <StyledButton onClick={handleBack}>
               <ArrowLeft size={16} className="dir-flip" />
               {t("common.back")}

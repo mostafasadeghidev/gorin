@@ -94,7 +94,9 @@
 
   .list-header {
     display: flex;
+    align-items: baseline;
     justify-content: space-between;
+    gap: 1rem;
     margin-bottom: 0.65rem;
 
     span {
@@ -103,6 +105,14 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.04em;
+    }
+
+    .list-header-step {
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: normal;
     }
   }
 }

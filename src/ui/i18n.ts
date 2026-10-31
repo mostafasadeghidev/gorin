@@ -95,6 +95,8 @@ const en = {
     "In Advanced mode the output must come from the tool you picked. Try the same format from another tool, or switch to Simple mode in settings.",
   "conv.complete": "Conversion complete!",
   "conv.summary": "Converted {from} → {to} via {path}",
+  "conv.summaryMixed": ({ n, to, count }) =>
+    `Converted ${n} file${count === 1 ? "" : "s"} to ${to}`,
   "conv.errorTitle": "Conversion error",
   "conv.errorText": "An unexpected error occurred: {error}",
   "conv.cancelTitle": "Cancel conversion",
@@ -105,6 +107,8 @@ const en = {
 
   "results.zip": ({ n }) => `Download all as ZIP (${n} files)`,
   "results.zipping": "Zipping…",
+  "results.failed": "These files couldn't be converted: {files}",
+  "results.startOver": "Convert new files",
   "results.download": "Download {name}",
 
   "explorer.search": "Search formats…",
@@ -119,6 +123,10 @@ const en = {
   "explorer.clearFilters": "Clear filters",
   "explorer.showAll": "Show all",
   "explorer.notFound": "Didn't find what you were looking for?",
+  "explorer.suggested": "Suggested",
+  "explorer.stepFrom": "Step 1 — What format is your file?",
+  "explorer.stepTo": "Step 2 — Convert to",
+  "explorer.mixedInput": ({ n }) => `${n} kinds of files`,
 
   "fromto.input": "input",
   "fromto.output": "output",
@@ -226,6 +234,7 @@ const fa: Record<MessageKey, Message> = {
     "در حالتِ پیشرفته، خروجی باید با همان ابزاری ساخته شود که انتخاب کرده‌اید. همین فرمت را از ابزارِ دیگری انتخاب کنید، یا در تنظیمات حالتِ پیشرفته را خاموش کنید.",
   "conv.complete": "تبدیل انجام شد!",
   "conv.summary": "تبدیلِ {from} به {to} از مسیرِ {path}",
+  "conv.summaryMixed": "{n} فایل به {to} تبدیل شد",
   "conv.errorTitle": "خطا در تبدیل",
   "conv.errorText": "خطای غیرمنتظره‌ای رخ داد: {error}",
   "conv.cancelTitle": "لغوِ تبدیل",
@@ -236,6 +245,8 @@ const fa: Record<MessageKey, Message> = {
 
   "results.zip": ({ n }) => `دانلودِ همه به‌صورتِ ZIP (${n} فایل)`,
   "results.zipping": "در حالِ ساختِ ZIP…",
+  "results.failed": "این فایل‌ها تبدیل نشدند: {files}",
+  "results.startOver": "تبدیلِ فایل‌های جدید",
   "results.download": "دانلودِ {name}",
 
   "explorer.search": "جست‌وجوی فرمت…",
@@ -250,6 +261,10 @@ const fa: Record<MessageKey, Message> = {
   "explorer.clearFilters": "پاک کردنِ فیلترها",
   "explorer.showAll": "نمایشِ همه",
   "explorer.notFound": "چیزی را که می‌خواستید پیدا نکردید؟",
+  "explorer.suggested": "پیشنهادی",
+  "explorer.stepFrom": "مرحلهٔ ۱ — فایلِ شما چه فرمتی است؟",
+  "explorer.stepTo": "مرحلهٔ ۲ — تبدیل به",
+  "explorer.mixedInput": ({ n }) => `${n} نوع فایل`,
 
   "fromto.input": "ورودی",
   "fromto.output": "خروجی",
@@ -354,6 +369,7 @@ const ckb: Record<MessageKey, Message> = {
     "لە دۆخی پێشکەوتوودا، دەرچوو دەبێت بە هەمان ئەو ئامرازە دروست بکرێت کە هەڵتبژاردووە. هەمان فۆرمات لە ئامرازێکی تر هەڵبژێرە، یان لە ڕێکخستنەکاندا دۆخی پێشکەوتوو بکوژێنەرەوە.",
   "conv.complete": "گۆڕین تەواو بوو!",
   "conv.summary": "{from} گۆڕدرا بۆ {to} لە ڕێگەی {path}",
+  "conv.summaryMixed": "{n} فایل گۆڕدرا بۆ {to}",
   "conv.errorTitle": "هەڵە لە گۆڕیندا",
   "conv.errorText": "هەڵەیەکی چاوەڕواننەکراو ڕوویدا: {error}",
   "conv.cancelTitle": "هەڵوەشاندنەوەی گۆڕین",
@@ -364,6 +380,8 @@ const ckb: Record<MessageKey, Message> = {
 
   "results.zip": ({ n }) => `داگرتنی هەمووی وەک ZIP (${n} فایل)`,
   "results.zipping": "ZIP دروست دەکرێت…",
+  "results.failed": "ئەم فایلانە نەگۆڕدران: {files}",
+  "results.startOver": "گۆڕینی فایلی نوێ",
   "results.download": "داگرتنی {name}",
 
   "explorer.search": "گەڕان بۆ فۆرمات…",
@@ -378,6 +396,10 @@ const ckb: Record<MessageKey, Message> = {
   "explorer.clearFilters": "سڕینەوەی پاڵاوتنەکان",
   "explorer.showAll": "پیشاندانی هەموو",
   "explorer.notFound": "ئەوەی دەتویست نەتدۆزییەوە؟",
+  "explorer.suggested": "پێشنیارکراو",
+  "explorer.stepFrom": "هەنگاوی ١ — فایلەکەت چ فۆرماتێکە؟",
+  "explorer.stepTo": "هەنگاوی ٢ — بگۆڕە بۆ",
+  "explorer.mixedInput": ({ n }) => `${n} جۆر فایل`,
 
   "fromto.input": "هاتوو",
   "fromto.output": "دەرچوو",

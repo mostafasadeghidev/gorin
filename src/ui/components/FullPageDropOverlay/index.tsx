@@ -3,8 +3,6 @@ import { Upload } from "lucide-preact";
 
 import { ConversionInProgress, CurrentPage, LoadingToolsText, Pages } from "src/ui/AppState";
 import { SelectedFiles } from "src/main";
-import { PopupData } from "src/ui";
-import { openPopup } from "src/ui/PopupStore";
 import { t } from "src/ui/i18n";
 
 import "./index.css";
@@ -117,19 +115,6 @@ export default function FullPageDropOverlay() {
       const files = getDraggedFiles(event.dataTransfer);
 
       if (!files || files.length === 0) {
-        setDraggedFileName(null);
-        return;
-      }
-
-      const sameMime = files.every((file) => file.type === files[0].type);
-      if (!sameMime) {
-        PopupData.value = {
-          title: t("invalid.title"),
-          text: t("invalid.text"),
-          dismissible: true,
-          buttonText: t("common.ok"),
-        };
-        openPopup();
         setDraggedFileName(null);
         return;
       }

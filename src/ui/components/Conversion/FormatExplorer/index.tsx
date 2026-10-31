@@ -38,6 +38,7 @@ import {
   hasActiveFilters,
 } from "src/ui/FormatCategories";
 import { Category, type CategoryType } from "src/Formats";
+import { getSuggestedExtensions } from "src/ui/suggestions";
 
 interface FormatExplorerProps {
   conversionOptions: ConversionOptionsMap;
@@ -57,6 +58,10 @@ interface FormatExplorerProps {
   onShowAll?: () => void;
   /** Other parts of the page where typing should also go to the search input. */
   searchScopeRef?: RefObject<HTMLElement | null>;
+  /** Input categories to suggest output formats for, and input extensions to leave out */
+  suggestFor?: { categories: CategoryType[]; exclude: string[] };
+  /** Label for the input pill when several kinds of input are converted at once */
+  fromLabel?: string;
 }
 
 type SearchIndex = Map<string, ConversionOption>;
@@ -83,7 +88,8 @@ function matchesFormatSearch(option: ConversionOption, termLower: string): boole
     file.extension.toLowerCase().includes(termLower) ||
     file.mime.toLowerCase().includes(termLower) ||
     file.internal.toLowerCase().includes(termLower) ||
-    handler.name.toLowerCase().includes(termLower)
+    // Only match tool names from the start, so "ico" doesn't hit e.g. "midiCodec"
+    handler.name.toLowerCase().startsWith(termLower)
   );
 }
 
@@ -142,6 +148,30 @@ function generateSearchIndex(
   }
 }
 
+/** Moves the suggested output formats (one card per extension) to the front of the list */
+function applySuggestions(
+  index: SearchIndex,
+  suggestFor: FormatExplorerProps["suggestFor"],
+): { index: SearchIndex; suggested: Set<string> } {
+  const suggested = new Set<string>();
+  if (!suggestFor) return { index, suggested };
+  const extensions = getSuggestedExtensions(suggestFor.categories, suggestFor.exclude);
+  const byExtension = new Map<string, string>();
+  for (const [key, [format]] of index) {
+    const ext = format.extension.toLowerCase();
+    if (extensions.includes(ext) && !byExtension.has(ext)) byExtension.set(ext, key);
+  }
+  const front: [string, ConversionOption][] = [];
+  for (const ext of extensions) {
+    const key = byExtension.get(ext);
+    if (!key) continue;
+    suggested.add(key);
+    front.push([key, index.get(key)!]);
+  }
+  const rest = [...index].filter(([key]) => !suggested.has(key));
+  return { index: new Map([...front, ...rest]), suggested };
+}
+
 function filterByCategories(options: SearchIndex, categories: Set<CategoryType>): SearchIndex {
   if (categories.size === 0) return options;
 
@@ -189,12 +219,18 @@ export default function FormatExplorer({
   showAll = false,
   onShowAll,
   searchScopeRef,
+  suggestFor,
+  fromLabel,
 }: FormatExplorerProps) {
   const isAdvanced = Mode.value === ModeEnum.Advanced;
 
-  const originalIndex = useMemo(
-    () => generateSearchIndex(conversionOptions, matchingFrom, showAll, isAdvanced, direction),
-    [conversionOptions, matchingFrom, showAll, isAdvanced, direction],
+  const { index: originalIndex, suggested } = useMemo(
+    () =>
+      applySuggestions(
+        generateSearchIndex(conversionOptions, matchingFrom, showAll, isAdvanced, direction),
+        direction === "to" ? suggestFor : undefined,
+      ),
+    [conversionOptions, matchingFrom, showAll, isAdvanced, direction, suggestFor],
   );
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -301,6 +337,7 @@ export default function FormatExplorer({
       <div className="format-browser">
         <div className="search-container">
           <FromTo
+            fromLabel={fromLabel}
             fromOption={fromOption ?? null}
             toOption={toOption ?? null}
             fromCount={fromCount ?? 0}
@@ -410,6 +447,9 @@ export default function FormatExplorer({
           }}
         >
           <div className="list-header">
+            <span className="list-header-step">
+              {t(direction === "from" ? "explorer.stepFrom" : "explorer.stepTo")}
+            </span>
             <span>{t("explorer.count", { n: searchResultsIndex.size })}</span>
           </div>
 
@@ -444,6 +484,7 @@ export default function FormatExplorer({
                   id={key}
                   key={key}
                   advanced={isAdvanced}
+                  suggested={suggested.has(key)}
                 />
               ))}
             </div>

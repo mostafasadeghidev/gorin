@@ -5,6 +5,8 @@ import "./index.css";
 import { t } from "src/ui/i18n";
 
 interface FromToProps {
+  /** Shown instead of the input format, e.g. when several kinds of input are mixed */
+  fromLabel?: string;
   fromOption: ConversionOption | null;
   toOption: ConversionOption | null;
   fromCount: number;
@@ -16,6 +18,7 @@ interface FromToProps {
 
 function ExtPill({
   option,
+  label: customLabel,
   placeholder,
   count,
   kind,
@@ -23,6 +26,7 @@ function ExtPill({
   onClick,
 }: {
   option: ConversionOption | null;
+  label?: string;
   placeholder: boolean;
   count: number;
   kind: "input" | "output";
@@ -31,10 +35,12 @@ function ExtPill({
 }) {
   const ext = option?.[0].extension?.toUpperCase();
   const mime = option?.[0].mime;
-  const label = t("fromto.count", {
-    n: count,
-    kind: t(kind === "input" ? "fromto.input" : "fromto.output"),
-  });
+  const label =
+    customLabel ??
+    t("fromto.count", {
+      n: count,
+      kind: t(kind === "input" ? "fromto.input" : "fromto.output"),
+    });
 
   return (
     <button
@@ -67,6 +73,7 @@ function ExtPill({
 }
 
 export default function FromTo({
+  fromLabel,
   fromOption,
   toOption,
   fromCount,
@@ -79,6 +86,7 @@ export default function FromTo({
     <div className="fromto">
       <ExtPill
         option={fromOption}
+        label={fromLabel}
         placeholder={!fromOption}
         count={fromCount}
         kind="input"
