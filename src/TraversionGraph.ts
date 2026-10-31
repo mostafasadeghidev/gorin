@@ -449,7 +449,12 @@ export class TraversionGraph {
     this.listeners.forEach((l) => l(state, path));
   }
 
-  private calculateRemainingCosts(toIndex: number): number[] {
+  /**
+   * Cheapest cost from every node to `toIndex`, used as the A* estimate.
+   * With `finalHandler`, only that handler's edges may enter the target, so targets that
+   * handler can't actually be reached through come out as unreachable (Infinity).
+   */
+  private calculateRemainingCosts(toIndex: number, finalHandler?: string): number[] {
     const incomingEdges: Edge[][] = this.nodes.map(() => []);
     for (const edge of this.edges) incomingEdges[edge.to.index].push(edge);
 
@@ -464,6 +469,7 @@ export class TraversionGraph {
       const current = queue.poll()!;
       if (current.cost > costs[current.index]) continue;
       for (const edge of incomingEdges[current.index]) {
+        if (finalHandler && current.index === toIndex && edge.handler !== finalHandler) continue;
         const cost = current.cost + edge.cost;
         if (cost >= costs[edge.from.index]) continue;
         costs[edge.from.index] = cost;
@@ -486,7 +492,9 @@ export class TraversionGraph {
     const fromIndex = this.nodeIndexByIdentifier.get(fromIdentifier) ?? -1;
     const toIndex = this.nodeIndexByIdentifier.get(toIdentifier) ?? -1;
     if (fromIndex === -1 || toIndex === -1) return []; // If either format is not in the graph, return empty array
-    const remainingCosts = this.calculateRemainingCosts(toIndex);
+    // Outside simple mode the last step must use the chosen output handler
+    const finalHandler = !simpleMode && to.handler ? to.handler.name : undefined;
+    const remainingCosts = this.calculateRemainingCosts(toIndex, finalHandler);
     if (!Number.isFinite(remainingCosts[fromIndex])) return;
     const queue = new PriorityQueue<QueueNode>(
       1000,
@@ -533,6 +541,7 @@ export class TraversionGraph {
       this.nodes[current.index].edges.forEach((edgeIndex) => {
         let edge = this.edges[edgeIndex];
         if (!Number.isFinite(remainingCosts[edge.to.index])) return;
+        if (finalHandler && edge.to.index === toIndex && edge.handler !== finalHandler) return;
         if (
           current.path.some(
             (node) =>

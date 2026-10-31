@@ -322,7 +322,9 @@ export default function Conversion() {
         setStep("select-to");
         PopupData.value = {
           title: t("conv.failedTitle"),
-          text: t("conv.failedText"),
+          text: isAdvanced
+            ? `${t("conv.failedText")} ${t("conv.failedAdvancedHint")}`
+            : t("conv.failedText"),
           dismissible: true,
           buttonText: t("common.ok"),
         };

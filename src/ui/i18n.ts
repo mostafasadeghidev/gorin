@@ -91,6 +91,8 @@ const en = {
   "conv.removeFile": "Remove file",
   "conv.failedTitle": "Conversion failed",
   "conv.failedText": "Could not find a valid conversion route between these formats.",
+  "conv.failedAdvancedHint":
+    "In Advanced mode the output must come from the tool you picked. Try the same format from another tool, or switch to Simple mode in settings.",
   "conv.complete": "Conversion complete!",
   "conv.summary": "Converted {from} → {to} via {path}",
   "conv.errorTitle": "Conversion error",
@@ -220,6 +222,8 @@ const fa: Record<MessageKey, Message> = {
   "conv.removeFile": "حذفِ فایل",
   "conv.failedTitle": "تبدیل ناموفق بود",
   "conv.failedText": "مسیری برای تبدیلِ این فرمت‌ها به یکدیگر پیدا نشد.",
+  "conv.failedAdvancedHint":
+    "در حالتِ پیشرفته، خروجی باید با همان ابزاری ساخته شود که انتخاب کرده‌اید. همین فرمت را از ابزارِ دیگری انتخاب کنید، یا در تنظیمات حالتِ پیشرفته را خاموش کنید.",
   "conv.complete": "تبدیل انجام شد!",
   "conv.summary": "تبدیلِ {from} به {to} از مسیرِ {path}",
   "conv.errorTitle": "خطا در تبدیل",
@@ -346,6 +350,8 @@ const ckb: Record<MessageKey, Message> = {
   "conv.removeFile": "لابردنی فایل",
   "conv.failedTitle": "گۆڕین سەرکەوتوو نەبوو",
   "conv.failedText": "هیچ ڕێگایەک بۆ گۆڕینی ئەم فۆرماتانە نەدۆزرایەوە.",
+  "conv.failedAdvancedHint":
+    "لە دۆخی پێشکەوتوودا، دەرچوو دەبێت بە هەمان ئەو ئامرازە دروست بکرێت کە هەڵتبژاردووە. هەمان فۆرمات لە ئامرازێکی تر هەڵبژێرە، یان لە ڕێکخستنەکاندا دۆخی پێشکەوتوو بکوژێنەرەوە.",
   "conv.complete": "گۆڕین تەواو بوو!",
   "conv.summary": "{from} گۆڕدرا بۆ {to} لە ڕێگەی {path}",
   "conv.errorTitle": "هەڵە لە گۆڕیندا",
