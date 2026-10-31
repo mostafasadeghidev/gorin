@@ -14,7 +14,7 @@ Examples:
 
 ```bash
 # A commit-pinned github tarball:
-bun run build:add word-parser https://github.com/p2r3/envelope/archive/2d8bc87d948ccfc391e86724bb0a5d7b1689d5c6.tar.gz
+bun run build:add word-parser https://example.com/word-parser.tar.gz
 # Or some other source:
 bun run build:add bash https://ftp.gnu.org/gnu/bash/bash-5.3.tar.gz
 ```

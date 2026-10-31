@@ -7,7 +7,7 @@ import type { PrebuildRequirement } from "./types";
 
 // prebuilt tarballs live in github release assets, git only tracks a small pointer to them.
 // assets are named by their content hash, so a new build never replaces one something still uses
-export const REPO = process.env.PREBUILT_REPO ?? "p2r3/convert";
+export const REPO = process.env.PREBUILT_REPO ?? "mostafasadeghidev/gorin";
 export const TAG = process.env.PREBUILT_TAG ?? "prebuilts";
 
 export const PREBUILT_CACHE = join(CACHE_DIR, "prebuilts");

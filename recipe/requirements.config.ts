@@ -3,7 +3,7 @@ import type { RequirementsConfig } from "../scripts/build/types";
 export default [
   {
     name: "envelope",
-    url: "https://github.com/p2r3/envelope/archive/2d8bc87d948ccfc391e86724bb0a5d7b1689d5c6.tar.gz",
+    url: "https://github.com/mostafasadeghidev/gorin/releases/download/prebuilts/envelope-2d8bc87d948ccfc391e86724bb0a5d7b1689d5c6.tar.gz",
     hash: ["sha256", "913bf08c8c058870809ed5b142c7859c63eba0e147cd6807a6f1078053c92778"],
   },
   {
@@ -13,7 +13,7 @@ export default [
   },
   {
     name: "sppd",
-    url: "https://github.com/p2r3/sppd/archive/a9d61795b5b3f2c6d06eda09ea3b31bf239e0498.tar.gz",
+    url: "https://github.com/mostafasadeghidev/gorin/releases/download/prebuilts/sppd-a9d61795b5b3f2c6d06eda09ea3b31bf239e0498.tar.gz",
     hash: ["sha256", "0fc79a67fd285bcae5b73f55b140a28d10e7d7a74db56bad233b2e5b6deb6014"],
   },
   {
