@@ -133,7 +133,8 @@ function getMatchingFromFormats(
 
 /**
  * Picks the input format for a file.
- * In simple mode the exact extension + MIME match wins; otherwise only an unambiguous match is used.
+ * The exact extension + MIME match wins. In advanced mode, where every tool is listed separately,
+ * the most capable tool for that format is picked.
  */
 function detectInputOption(
   options: ConversionOptionsMap,
@@ -143,10 +144,25 @@ function detectInputOption(
   if (!file) return null;
   const matching = getMatchingFromFormats(options, [file]);
   if (!matching.size) return null;
-  if (!simple) return matching.size === 1 ? (matching.entries().next().value ?? null) : null;
-
   const mimeCandidates = getMimeCandidatesForFile(file);
   const ext = file.name.split(".").pop()?.toLowerCase() || "";
+
+  if (!simple) {
+    if (matching.size === 1) return matching.entries().next().value ?? null;
+    // Several tools can read this file: start with the exact format match whose tool can
+    // produce the most outputs (e.g. ImageMagick for PNG). The input pill lets the user change it.
+    const outputCounts = new Map<string, number>();
+    for (const [format, handler] of options) {
+      if (format.to) outputCounts.set(handler.name, (outputCounts.get(handler.name) ?? 0) + 1);
+    }
+    let best: ConversionOption | null = null;
+    for (const [format, handler] of matching) {
+      if (ext !== format.extension || !mimeCandidates.includes(format.mime)) continue;
+      if (!best || (outputCounts.get(handler.name) ?? 0) > (outputCounts.get(best[1].name) ?? 0))
+        best = [format, handler];
+    }
+    return best;
+  }
 
   const uniqueFormats = new Set<string>();
   for (const [format, handler] of matching) {
