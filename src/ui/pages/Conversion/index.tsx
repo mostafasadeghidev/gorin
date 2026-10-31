@@ -25,6 +25,7 @@ import { ConversionInProgress, CurrentPage, Pages } from "src/ui/AppState";
 import { ProgressStore } from "src/ui/ProgressStore";
 import StyledButton, { ButtonVariant } from "src/ui/components/StyledButton";
 import ConversionResults, { downloadFile } from "src/ui/components/ConversionResults";
+import { t } from "src/ui/i18n";
 
 let previousSelection: {
   fileExt: string;
@@ -141,10 +142,10 @@ function addFiles(fileList: FileList | null | undefined) {
   const sameMime = files.every((file) => file.type === files[0].type);
   if (!sameMime) {
     PopupData.value = {
-      title: "Invalid selection",
-      text: "All input files must be of the same type.",
+      title: t("invalid.title"),
+      text: t("invalid.text"),
       dismissible: true,
-      buttonText: "OK",
+      buttonText: t("common.ok"),
     };
     openPopup();
     return;
@@ -320,25 +321,29 @@ export default function Conversion() {
         setIsConverting(false);
         setStep("select-to");
         PopupData.value = {
-          title: "Conversion failed",
-          text: "Could not find a valid conversion route between these formats.",
+          title: t("conv.failedTitle"),
+          text: t("conv.failedText"),
           dismissible: true,
-          buttonText: "OK",
+          buttonText: t("common.ok"),
         };
         openPopup(() => actionRef.current);
         return;
       }
 
-      const summary = `Converted ${fromOption[0].format.toUpperCase()} → ${toOption[0].format.toUpperCase()} via ${output.path.map((c) => c.format.format).join(" → ")}`;
+      const summary = t("conv.summary", {
+        from: fromOption[0].format.toUpperCase(),
+        to: toOption[0].format.toUpperCase(),
+        path: output.path.map((c) => c.format.format).join(" → "),
+      });
 
       if (output.files.length === 1) {
         const [file] = output.files;
         downloadFile(file.bytes, file.name);
         PopupData.value = {
-          title: "Conversion complete!",
+          title: t("conv.complete"),
           text: summary,
           dismissible: true,
-          buttonText: "OK",
+          buttonText: t("common.ok"),
         };
       } else {
         PopupData.value = {
@@ -351,7 +356,7 @@ export default function Conversion() {
           ),
           className: "results-popup",
           dismissible: true,
-          buttonText: "Close",
+          buttonText: t("common.close"),
         };
       }
       openPopup(() => actionRef.current);
@@ -361,10 +366,10 @@ export default function Conversion() {
         // Don't show an error popup for manual cancellation
       } else {
         PopupData.value = {
-          title: "Conversion error",
-          text: `An unexpected error occurred: ${e}`,
+          title: t("conv.errorTitle"),
+          text: t("conv.errorText", { error: String(e) }),
           dismissible: true,
-          buttonText: "OK",
+          buttonText: t("common.ok"),
         };
         openPopup(() => actionRef.current);
       }
@@ -466,7 +471,7 @@ export default function Conversion() {
               type="button"
               className="file-info-badge file-info-add"
               onClick={handleAddClick}
-              aria-label="Add more files"
+              aria-label={t("conv.addFiles")}
             >
               <Plus size={16} />
             </button>
@@ -474,8 +479,8 @@ export default function Conversion() {
           </div>
           {step === "select-to" && (
             <StyledButton onClick={handleBack}>
-              <ArrowLeft size={16} />
-              Back
+              <ArrowLeft size={16} className="dir-flip" />
+              {t("common.back")}
             </StyledButton>
           )}
           <StyledButton
@@ -485,8 +490,8 @@ export default function Conversion() {
             disabled={!canProceed}
             onClick={step === "select-from" ? handleNext : handleConvert}
           >
-            {step === "select-from" ? "Next" : "Convert"}
-            {step === "select-from" && <ArrowRight size={16} />}
+            {step === "select-from" ? t("common.next") : t("common.convert")}
+            {step === "select-from" && <ArrowRight size={16} className="dir-flip" />}
           </StyledButton>
         </div>
       )}

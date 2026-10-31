@@ -13,8 +13,8 @@ export interface PopupDataContainer {
    * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog#popover_api_html_attributes
    */
   dismissible?: boolean;
-  /** Text for the button. If this is undefined, the popup will hide the button */
-  buttonText?: string;
+  /** Text for the button. If this is undefined, the popup will hide the button. A function is re-evaluated on render */
+  buttonText?: string | (() => string);
   /** The event handler for the button. If this is just `true`, clicking the button will close the modal */
   buttonOnClick?: preact.MouseEventHandler<HTMLButtonElement> | true;
   /**

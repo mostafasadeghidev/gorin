@@ -5,6 +5,7 @@ import { ConversionInProgress, CurrentPage, LoadingToolsText, Pages } from "src/
 import { SelectedFiles } from "src/main";
 import { PopupData } from "src/ui";
 import { openPopup } from "src/ui/PopupStore";
+import { t } from "src/ui/i18n";
 
 import "./index.css";
 
@@ -123,10 +124,10 @@ export default function FullPageDropOverlay() {
       const sameMime = files.every((file) => file.type === files[0].type);
       if (!sameMime) {
         PopupData.value = {
-          title: "Invalid selection",
-          text: "All input files must be of the same type.",
+          title: t("invalid.title"),
+          text: t("invalid.text"),
           dismissible: true,
-          buttonText: "OK",
+          buttonText: t("common.ok"),
         };
         openPopup();
         setDraggedFileName(null);
@@ -162,8 +163,8 @@ export default function FullPageDropOverlay() {
         <div className="full-page-drop-overlay-icon">
           <Upload />
         </div>
-        <p className="full-page-drop-overlay-title">Drop to upload</p>
-        <p className="full-page-drop-overlay-subtitle">Release to convert your file</p>
+        <p className="full-page-drop-overlay-title">{t("drop.title")}</p>
+        <p className="full-page-drop-overlay-subtitle">{t("drop.subtitle")}</p>
         {draggedFileName && (
           <div className="full-page-drop-overlay-chip" role="status">
             <Upload size={14} />

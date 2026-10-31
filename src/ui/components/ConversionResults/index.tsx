@@ -3,6 +3,7 @@ import { Download, FileArchive } from "lucide-preact";
 import type { FileData } from "src/FormatHandler";
 
 import "./index.css";
+import { t } from "src/ui/i18n";
 
 export function downloadFile(bytes: Uint8Array | Blob, name: string) {
   const blob =
@@ -46,26 +47,26 @@ export default function ConversionResults({ files, summary, zipName }: Conversio
 
   return (
     <div className="conversion-results">
-      <h1>Conversion complete!</h1>
+      <h1>{t("conv.complete")}</h1>
       <p>{summary}</p>
 
       <button className="results-zip" onClick={downloadZip} disabled={zipping}>
         <FileArchive size={16} />
-        {zipping ? "Zipping…" : `Download all as ZIP (${files.length} files)`}
+        {zipping ? t("results.zipping") : t("results.zip", { n: files.length })}
       </button>
 
       <ul className="results-list">
         {files.map((file) => (
           <li key={file.name}>
-            <span className="results-name" title={file.name}>
+            <bdi className="results-name" title={file.name}>
               {file.name}
-            </span>
+            </bdi>
             <span className="results-size">{formatSize(file.bytes.length)}</span>
             <button
               className="results-download"
               onClick={() => downloadFile(file.bytes, file.name)}
-              title={`Download ${file.name}`}
-              aria-label={`Download ${file.name}`}
+              title={t("results.download", { name: file.name })}
+              aria-label={t("results.download", { name: file.name })}
             >
               <Download size={16} />
             </button>

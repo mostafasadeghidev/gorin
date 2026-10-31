@@ -7,6 +7,7 @@ import FileInfoBadge from "src/ui/components/FileInfo";
 import ConversionLogs from "src/ui/components/ConversionLogs";
 import "./index.css";
 import { ProgressStore } from "src/ui/ProgressStore";
+import { t } from "src/ui/i18n";
 
 interface LoadingScreenProps {
   fileName: string;
@@ -27,9 +28,7 @@ export default function LoadingScreen({ fileName, fileSize, from, to }: LoadingS
       <div className="loading-status-area">
         <FileInfoBadge fileName={fileName} fileSize={fileSize} extension={from?.extension} />
 
-        <h2 className="loading-title">
-          {ProgressStore.message.value || "Finding conversion route..."}
-        </h2>
+        <h2 className="loading-title">{ProgressStore.message.value || t("conv.findingRoute")}</h2>
       </div>
 
       <div className="loading-metrics-card">
@@ -49,10 +48,10 @@ export default function LoadingScreen({ fileName, fileSize, from, to }: LoadingS
                 category={from.category}
                 size={18}
               />
-              <span className="loading-format-ext">.{fromExt}</span>
+              <bdi className="loading-format-ext">.{fromExt}</bdi>
             </div>
           )}
-          <ArrowRight size={24} className="loading-arrow" aria-hidden="true" />
+          <ArrowRight size={24} className="loading-arrow dir-flip" aria-hidden="true" />
           {to && (
             <div className="loading-format-pill" aria-hidden="true">
               <FileIcon
@@ -61,7 +60,7 @@ export default function LoadingScreen({ fileName, fileSize, from, to }: LoadingS
                 category={to.category}
                 size={18}
               />
-              <span className="loading-format-ext">.{toExt}</span>
+              <bdi className="loading-format-ext">.{toExt}</bdi>
             </div>
           )}
         </div>
@@ -73,10 +72,10 @@ export default function LoadingScreen({ fileName, fileSize, from, to }: LoadingS
             ref={cancelRef}
             className="loading-action-btn danger"
             onClick={() => ProgressStore.abort()}
-            title="Cancel Conversion"
+            title={t("conv.cancelTitle")}
           >
             <XSquare size={18} />
-            <span>Cancel</span>
+            <span>{t("common.cancel")}</span>
           </button>
         </div>
       </div>

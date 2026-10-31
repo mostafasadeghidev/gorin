@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "preact/hooks";
 import { ProgressStore } from "src/ui/ProgressStore";
 import "./index.css";
+import { t } from "src/ui/i18n";
 
 export default function ConversionLogs() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -12,9 +13,9 @@ export default function ConversionLogs() {
   }, [ProgressStore.logs.value]);
 
   return (
-    <div className="conversion-logs-inline" ref={containerRef}>
+    <div className="conversion-logs-inline" ref={containerRef} dir="ltr">
       {ProgressStore.logs.value.length === 0 ? (
-        <div className="conversion-logs-empty">No logs available.</div>
+        <div className="conversion-logs-empty">{t("conv.noLogs")}</div>
       ) : (
         ProgressStore.logs.value.map((log, i) => (
           <div key={i} className={`log-entry level-${log.level}`}>

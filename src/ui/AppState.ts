@@ -1,6 +1,7 @@
 import { signal } from "@preact/signals";
 
 import type { PopupDataContainer } from "./PopupStore";
+import { t, type MessageKey } from "./i18n";
 
 export const enum Pages {
   Upload = "uploadPage",
@@ -10,11 +11,11 @@ export const enum Pages {
 export const CurrentPage = signal<Pages>(Pages.Upload);
 
 export const PopupData = signal<PopupDataContainer>({
-  title: "Loading tools...",
-  text: "Please wait while the app loads conversion tools.",
+  title: t("loading.toolsTitle"),
+  text: t("loading.toolsText"),
   dismissible: false,
-  buttonText: "Ignore",
+  buttonText: t("loading.toolsIgnore"),
 });
 
-export const LoadingToolsText = signal<string | undefined>("Loading formats…");
+export const LoadingToolsText = signal<MessageKey | undefined>("loading.formats");
 export const ConversionInProgress = signal(false);

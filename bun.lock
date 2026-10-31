@@ -10,6 +10,7 @@
         "@bokuweb/zstd-wasm": "^0.0.27",
         "@flo-audio/reflo": "^0.1.2",
         "@fontsource-variable/inter": "^5.3.0",
+        "@fontsource-variable/vazirmatn": "^5.3.0",
         "@imagemagick/magick-wasm": "^0.0.44",
         "@mediabunny/aac-encoder": "^1.61.1",
         "@mediabunny/flac-encoder": "^1.61.1",
@@ -168,6 +169,8 @@
     "@flo-audio/reflo": ["@flo-audio/reflo@0.1.2", "", {}, "sha512-drjhfovfuYFEh0Cc+2P/rnmHo0+AYpkCPyjanJjlHNpLlSJeTu1NiOWKA4RfxEitYip+3HiAgWygRkJnKTsCfQ=="],
 
     "@fontsource-variable/inter": ["@fontsource-variable/inter@5.3.0", "", {}, "sha512-OupL48va4JNofb97w6NYeF9S7W/kHNKM0Er8Dem5nqi4jeOLrVJDoE8tZEpnMJmtkvNbB1EIPPwHcdkF6b1oUA=="],
+
+    "@fontsource-variable/vazirmatn": ["@fontsource-variable/vazirmatn@5.3.0", "", {}, "sha512-ZA68W8JHbMdNzzwjYHUWKB2PH22QpxNEnk0ukcXM+XiqYMV6ZWJZAKuNXcrMR2JjuIAwsfAU3KknCXPI6wXUvw=="],
 
     "@happy-dom/global-registrator": ["@happy-dom/global-registrator@20.14.5", "", { "dependencies": { "@types/node": ">=20.0.0", "happy-dom": "^20.14.5" } }, "sha512-B05ID9DhSwLs6mlm1fzlkAtTIvB3duCvjJjfr19LBrlTK7VZtRjDqoTRIVv13GuYuNdhByu8LSZgThwV3Rkj7g=="],
 

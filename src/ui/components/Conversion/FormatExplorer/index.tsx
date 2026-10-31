@@ -1,3 +1,4 @@
+import { t, type MessageKey } from "src/ui/i18n";
 import FormatCard from "src/ui/components/Conversion/FormatCard";
 import useFirstTabTarget from "src/ui/scripts/useFirstTabTarget";
 import useTypeToSearch from "src/ui/scripts/useTypeToSearch";
@@ -87,21 +88,21 @@ function matchesFormatSearch(option: ConversionOption, termLower: string): boole
 }
 
 const CATEGORY_CHIPS = {
-  [Category.IMAGE]: { label: "Image", icon: <Image size={14} /> },
-  [Category.VECTOR]: { label: "Vector", icon: <PenTool size={14} /> },
-  [Category.VIDEO]: { label: "Video", icon: <Video size={14} /> },
-  [Category.AUDIO]: { label: "Audio", icon: <Music size={14} /> },
-  [Category.TEXT]: { label: "Text", icon: <Text size={14} /> },
-  [Category.DATA]: { label: "Data", icon: <Braces size={14} /> },
-  [Category.CODE]: { label: "Code", icon: <Code size={14} /> },
-  [Category.DOCUMENT]: { label: "Document", icon: <FileText size={14} /> },
-  [Category.SPREADSHEET]: { label: "Spreadsheet", icon: <Sheet size={14} /> },
-  [Category.PRESENTATION]: { label: "Presentation", icon: <Presentation size={14} /> },
-  [Category.ARCHIVE]: { label: "Archive", icon: <Archive size={14} /> },
-  [Category.FONT]: { label: "Font", icon: <Type size={14} /> },
-  [Category.MODEL]: { label: "3D Model", icon: <Box size={14} /> },
-  [Category.DATABASE]: { label: "Database", icon: <Database size={14} /> },
-} satisfies Record<CategoryType, { label: string; icon: preact.ComponentChildren }>;
+  [Category.IMAGE]: { label: "category.image", icon: <Image size={14} /> },
+  [Category.VECTOR]: { label: "category.vector", icon: <PenTool size={14} /> },
+  [Category.VIDEO]: { label: "category.video", icon: <Video size={14} /> },
+  [Category.AUDIO]: { label: "category.audio", icon: <Music size={14} /> },
+  [Category.TEXT]: { label: "category.text", icon: <Text size={14} /> },
+  [Category.DATA]: { label: "category.data", icon: <Braces size={14} /> },
+  [Category.CODE]: { label: "category.code", icon: <Code size={14} /> },
+  [Category.DOCUMENT]: { label: "category.document", icon: <FileText size={14} /> },
+  [Category.SPREADSHEET]: { label: "category.spreadsheet", icon: <Sheet size={14} /> },
+  [Category.PRESENTATION]: { label: "category.presentation", icon: <Presentation size={14} /> },
+  [Category.ARCHIVE]: { label: "category.archive", icon: <Archive size={14} /> },
+  [Category.FONT]: { label: "category.font", icon: <Type size={14} /> },
+  [Category.MODEL]: { label: "category.model", icon: <Box size={14} /> },
+  [Category.DATABASE]: { label: "category.database", icon: <Database size={14} /> },
+} satisfies Record<CategoryType, { label: MessageKey; icon: preact.ComponentChildren }>;
 
 function generateSearchIndex(
   optionsMap: ConversionOptionsMap,
@@ -320,7 +321,9 @@ export default function FormatExplorer({
               <input
                 ref={searchInputRef}
                 type="text"
-                aria-label={`Search ${direction === "from" ? "input" : "output"} formats`}
+                aria-label={t(
+                  direction === "from" ? "explorer.searchInput" : "explorer.searchOutput",
+                )}
                 onKeyDown={(event) => {
                   if (hasModifier(event)) return;
                   if (event.key === "Enter" || event.key === "ArrowDown") {
@@ -330,7 +333,7 @@ export default function FormatExplorer({
                     setFocusGrid(true);
                   }
                 }}
-                placeholder="Search formats..."
+                placeholder={t("explorer.search")}
                 value={searchInputValue}
                 onInput={(ev) => {
                   const val = ev.currentTarget.value;
@@ -341,7 +344,7 @@ export default function FormatExplorer({
               {searchInputValue && (
                 <button
                   className="search-clear"
-                  aria-label="Clear search"
+                  aria-label={t("explorer.clearSearch")}
                   onClick={() => {
                     clearSearch();
                     focusSearch();
@@ -355,7 +358,7 @@ export default function FormatExplorer({
             <button
               type="button"
               className="category-toggle"
-              aria-label="Toggle categories"
+              aria-label={t("explorer.toggleCategories")}
               aria-expanded={categoriesExpanded}
               aria-controls={`category-filters-${direction}`}
               onClick={() => setCategoriesExpanded((expanded) => !expanded)}
@@ -367,7 +370,7 @@ export default function FormatExplorer({
             id={`category-filters-${direction}`}
             className={`chip-filters${categoriesExpanded ? " is-expanded" : ""}`}
             role="group"
-            aria-label="Filter by category"
+            aria-label={t("explorer.filterByCategory")}
             onKeyDown={(event) =>
               moveFocus(event, [...event.currentTarget.querySelectorAll("button")], { wrap: true })
             }
@@ -377,7 +380,7 @@ export default function FormatExplorer({
                 key={id}
                 tabIndex={activeChip === index ? 0 : -1}
                 onFocus={() => setActiveChip(index)}
-                label={label}
+                label={t(label)}
                 icon={icon}
                 selected={activeCategories.has(id as CategoryType)}
                 onClick={() => toggleCategory(id as CategoryType)}
@@ -407,27 +410,25 @@ export default function FormatExplorer({
           }}
         >
           <div className="list-header">
-            <span>
-              {searchResultsIndex.size} format{searchResultsIndex.size !== 1 ? "s" : ""}
-            </span>
+            <span>{t("explorer.count", { n: searchResultsIndex.size })}</span>
           </div>
 
           {noResults ? (
             <div className="explorer-dialog">
-              <p>No matching formats found</p>
+              <p>{t("explorer.noResults")}</p>
               {filtersActive && (
                 <button className="explorer-dialog-btn" onClick={handleClearFilters}>
-                  Clear filters
+                  {t("explorer.clearFilters")}
                 </button>
               )}
               {direction === "from" && !showAll && (
                 <button className="explorer-dialog-btn" onClick={showAllFormats}>
-                  Show all
+                  {t("explorer.showAll")}
                 </button>
               )}
             </div>
           ) : (
-            <div className="format-grid" role="listbox" aria-label="Formats">
+            <div className="format-grid" role="listbox" aria-label={t("explorer.formats")}>
               {Array.from(searchResultsIndex).map(([key, option]) => (
                 <FormatCard
                   selected={key === selectedOptionId}
@@ -449,9 +450,9 @@ export default function FormatExplorer({
           )}
           {!noResults && direction === "from" && !showAll && (
             <div className="explorer-dialog">
-              <p>Didn't find what you were looking for?</p>
+              <p>{t("explorer.notFound")}</p>
               <button className="explorer-dialog-btn" onClick={showAllFormats}>
-                Show all
+                {t("explorer.showAll")}
               </button>
             </div>
           )}

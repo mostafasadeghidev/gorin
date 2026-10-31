@@ -73,7 +73,11 @@ export default function Popup() {
     <dialog id="popup" className={PopupData.value.className} ref={ref} onClick={clickHandler}>
       {getPopupContents()}
       {PopupData.value.buttonText && (
-        <button onClick={handleButtonClick}>{PopupData.value.buttonText}</button>
+        <button onClick={handleButtonClick}>
+          {typeof PopupData.value.buttonText === "function"
+            ? PopupData.value.buttonText()
+            : PopupData.value.buttonText}
+        </button>
       )}
     </dialog>
   );

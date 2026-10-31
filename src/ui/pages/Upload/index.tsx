@@ -6,6 +6,8 @@ import { Files, Layers, LockKeyhole, Sparkles, Upload } from "lucide-preact";
 import tippy from "tippy.js";
 import { PopupData } from "src/ui/AppState";
 import { openPopup } from "src/ui/PopupStore";
+import { CurrentLang, t } from "src/ui/i18n";
+import LanguageSelect from "src/ui/components/LanguageSelect";
 
 import Logo from "src/ui/components/Logo";
 import HelpButton from "src/ui/components/HelpButton";
@@ -24,12 +26,12 @@ export default function UploadPage() {
   useEffect(() => {
     if (!formatsRef.current) return;
     const instance = tippy(formatsRef.current, {
-      content: "View supported formats",
+      content: t("upload.viewFormats"),
       placement: "bottom",
       delay: [300, 0],
     });
     return () => instance.destroy();
-  }, []);
+  }, [CurrentLang.value]);
 
   const handleClick = (ev: MouseEvent) => {
     ev.preventDefault();
@@ -48,10 +50,10 @@ export default function UploadPage() {
     const sameMime = files.every((file) => file.type === files[0].type);
     if (!sameMime) {
       PopupData.value = {
-        title: "Invalid selection",
-        text: "All input files must be of the same type.",
+        title: t("invalid.title"),
+        text: t("invalid.text"),
         dismissible: true,
-        buttonText: "OK",
+        buttonText: t("common.ok"),
       };
       openPopup(() => uploadRef.current);
       return;
@@ -92,14 +94,12 @@ export default function UploadPage() {
       <div className="upload-card">
         <div className="upload-card-header">
           <Logo showName={true} size={36} onClick={handleLogoClick} />
-          <p className="upload-tagline">
-            Convert almost any file to almost any format, right in your browser.
-          </p>
+          <p className="upload-tagline">{t("app.tagline")}</p>
         </div>
 
         <div
           ref={uploadRef}
-          aria-label="Select files to convert"
+          aria-label={t("upload.select")}
           aria-disabled={!formatsReady}
           className={`upload-dropzone ${!formatsReady ? "upload-dropzone--pending" : ""}`}
           onClick={handleClick}
@@ -128,35 +128,36 @@ export default function UploadPage() {
             <Upload />
           </div>
           <span className="upload-cta">
-            {window.matchMedia("(pointer: coarse)").matches ? "Tap" : "Click"} to select a file
+            {t(window.matchMedia("(pointer: coarse)").matches ? "upload.tap" : "upload.click")}
           </span>
           <span className="upload-hint">
-            {window.matchMedia("(pointer: coarse)").matches ? "" : "or drag and drop"}
+            {window.matchMedia("(pointer: coarse)").matches ? "" : t("upload.drag")}
           </span>
         </div>
 
         <ul className="upload-features">
           <li>
             <LockKeyhole size={15} aria-hidden="true" />
-            Files never leave your device
+            {t("feature.private")}
           </li>
           <li>
             <Layers size={15} aria-hidden="true" />
-            Hundreds of formats
+            {t("feature.formats")}
           </li>
           <li>
             <Sparkles size={15} aria-hidden="true" />
-            Free, no sign-up
+            {t("feature.free")}
           </li>
         </ul>
 
         <div className="upload-card-actions">
+          <LanguageSelect />
           <SettingsButton />
           <HelpButton />
           <StyledButton
             buttonRef={formatsRef}
             variant={ButtonVariant.Icon}
-            ariaLabel="View supported formats"
+            ariaLabel={t("upload.viewFormats")}
             onClick={() => {
               if (!formatsReady) return;
               CurrentPage.value = Pages.Conversion;

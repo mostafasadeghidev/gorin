@@ -14,6 +14,7 @@ import { CurrentPage, LoadingToolsText, Pages } from "./ui/AppState.js";
 import { signal } from "@preact/signals";
 import { Mode, ModeEnum } from "./ui/ModeStore.js";
 import { ProgressStore } from "./ui/ProgressStore.js";
+import { t } from "./ui/i18n.js";
 
 type FileRecord = Record<`${string}-${string}`, File>;
 
@@ -128,7 +129,7 @@ async function attemptConvertPath(
     }
   }
 
-  ProgressStore.progress(`Trying ${pathString}...`, 0);
+  ProgressStore.progress(t("conv.trying", { path: pathString }), 0);
 
   let files = originalFiles;
 
@@ -229,7 +230,7 @@ async function attemptConvertPath(
       deadEndAttempts.push(deadEndPath);
       await window.traversionGraph.addDeadEndPath(path.slice(0, i + 2));
 
-      ProgressStore.progress("Looking for a valid path...", 0);
+      ProgressStore.progress(t("conv.lookingForPath"), 0);
       await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
       return null;
@@ -284,7 +285,7 @@ async function initSupportedFormats() {
     console.log("Built initial format list.");
   } catch (e) {
     console.error(e);
-    LoadingToolsText.value = "Could not load formats.";
+    LoadingToolsText.value = "loading.formatsFailed";
   }
 }
 

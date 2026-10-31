@@ -80,3 +80,37 @@ button:focus-visible,
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
+
+/* Right-to-left languages (Persian, Kurdish) */
+[dir="rtl"] .dir-flip {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] #popup.settings-popup .settings-switch:checked::after {
+  transform: translateX(-1rem);
+}
+
+[dir="rtl"] .loading-conversion-info::before {
+  clip-path: inset(0 0 0 calc(100% - var(--progress, 0%)));
+}
+
+.settings-select {
+  flex-shrink: 0;
+  padding: 0.35rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-secondary);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+/* File names, sizes and format names are Latin text; keep them left-to-right inside RTL layouts */
+[dir="rtl"] :is(.format-card-name, .results-name, .file-info-name) {
+  direction: ltr;
+  text-align: right;
+}
+
+[dir="rtl"] :is(.file-info-size, .results-size, .format-card-mime, .format-card-plugin) {
+  direction: ltr;
+  unicode-bidi: isolate;
+}

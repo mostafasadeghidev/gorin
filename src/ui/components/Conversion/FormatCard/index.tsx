@@ -45,7 +45,7 @@ export default function FormatCard({
           size={22}
         />
         <div className="format-card-text">
-          <span className="format-card-ext">.{format.extension.toUpperCase()}</span>
+          <bdi className="format-card-ext">.{format.extension.toUpperCase()}</bdi>
           <span className="format-card-name">{format.name}</span>
         </div>
         <div className="format-card-check" aria-hidden="true">

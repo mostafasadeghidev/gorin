@@ -40,6 +40,7 @@
     "@bokuweb/zstd-wasm": "^0.0.27",
     "@flo-audio/reflo": "^0.1.2",
     "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/vazirmatn": "^5.3.0",
     "@imagemagick/magick-wasm": "^0.0.44",
     "@mediabunny/aac-encoder": "^1.61.1",
     "@mediabunny/flac-encoder": "^1.61.1",

@@ -1,0 +1,34 @@
+.language-select.styled-button {
+  position: relative;
+  height: 36px;
+  padding: 0 0.7rem;
+  border-radius: 10px;
+  gap: 0.4rem;
+
+  .language-select-short {
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* The native select covers the button so the OS picker opens on click */
+  select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--bg-section);
+    border-color: var(--border-secondary);
+  }
+}

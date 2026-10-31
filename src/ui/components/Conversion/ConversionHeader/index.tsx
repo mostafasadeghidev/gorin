@@ -1,5 +1,6 @@
 import Logo from "src/ui/components/Logo";
 import SettingsButton from "src/ui/components/SettingsButton";
+import LanguageSelect from "src/ui/components/LanguageSelect";
 import { goToUploadHome } from "src/main";
 
 import "./index.css";
@@ -21,6 +22,7 @@ export default function ConversionHeader({
       </div>
 
       <div className="header-right">
+        <LanguageSelect />
         <SettingsButton />
       </div>
     </header>

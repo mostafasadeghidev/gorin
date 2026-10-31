@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-preact";
 import type { ConversionOption } from "src/main";
 import FileIcon from "src/ui/components/FileIcon";
 import "./index.css";
+import { t } from "src/ui/i18n";
 
 interface FromToProps {
   fromOption: ConversionOption | null;
@@ -30,20 +31,26 @@ function ExtPill({
 }) {
   const ext = option?.[0].extension?.toUpperCase();
   const mime = option?.[0].mime;
-  const label = `${count} ${kind} format${count === 1 ? "" : "s"}`;
+  const label = t("fromto.count", {
+    n: count,
+    kind: t(kind === "input" ? "fromto.input" : "fromto.output"),
+  });
 
   return (
     <button
       type="button"
       className={`fromto-pill ${placeholder ? "is-placeholder" : ""} ${selected ? "active" : ""}`}
       onClick={onClick}
-      aria-label={placeholder ? label : `Selected ${kind} format: ${ext}`}
+      aria-label={
+        placeholder
+          ? label
+          : t(kind === "input" ? "fromto.selectedInput" : "fromto.selectedOutput", {
+              ext: ext ?? "",
+            })
+      }
     >
       {placeholder ? (
-        <span className="fromto-count">
-          {count} <span className="fromto-count-kind">{kind} </span>
-          {`format${count === 1 ? "" : "s"}`}
-        </span>
+        <span className="fromto-count">{label}</span>
       ) : (
         <>
           <FileIcon
@@ -52,7 +59,7 @@ function ExtPill({
             category={option?.[0].category}
             size={22}
           />
-          <span className="fromto-ext">.{ext}</span>
+          <bdi className="fromto-ext">.{ext}</bdi>
         </>
       )}
     </button>
@@ -79,7 +86,7 @@ export default function FromTo({
         onClick={onClickFrom}
       />
       <div className="fromto-arrow" aria-hidden="true">
-        <ArrowRight size={30} />
+        <ArrowRight size={30} className="dir-flip" />
       </div>
       <ExtPill
         option={toOption}

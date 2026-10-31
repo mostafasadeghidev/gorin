@@ -9,25 +9,26 @@ import { useEffect, useRef } from "preact/hooks";
 import StyledButton, { ButtonVariant } from "src/ui/components/StyledButton";
 
 import "./index.css";
+import { CurrentLang, LANGUAGES, t, type Lang } from "src/ui/i18n";
 
 function getUpdateDescription(update: UpdateState) {
-  if (!update.supported) return "Updates aren't available in this build.";
+  if (!update.supported) return t("update.unsupported");
 
   switch (update.status) {
     case "checking":
-      return "Checking for updates…";
+      return t("update.checking");
     case "up-to-date":
-      return "You're on the latest version.";
+      return t("update.upToDate");
     case "available":
-      return update.canInstall ? "Downloading update…" : "An update is available.";
+      return update.canInstall ? t("update.downloading") : t("update.available");
     case "downloading":
-      return `Downloading update… ${Math.round(update.progress)}%`;
+      return t("update.downloadingPercent", { n: Math.round(update.progress) });
     case "downloaded":
-      return "The update will be installed when you quit.";
+      return t("update.downloaded");
     case "error":
-      return "Couldn't check for updates.";
+      return t("update.error");
     default:
-      return "Not checked yet.";
+      return t("update.notChecked");
   }
 }
 
@@ -38,7 +39,7 @@ function UpdateButton({ update }: { update: UpdateState }) {
   if (update.status === "downloaded") {
     return (
       <StyledButton variant={ButtonVariant.Primary} onClick={() => updater.install()}>
-        Restart to update
+        {t("settings.restartToUpdate")}
       </StyledButton>
     );
   }
@@ -46,7 +47,7 @@ function UpdateButton({ update }: { update: UpdateState }) {
   if (update.status === "available" && !update.canInstall) {
     return (
       <StyledButton variant={ButtonVariant.Primary} onClick={() => updater.openRelease()}>
-        Download
+        {t("common.download")}
       </StyledButton>
     );
   }
@@ -58,7 +59,7 @@ function UpdateButton({ update }: { update: UpdateState }) {
 
   return (
     <StyledButton disabled={!update.supported || busy} onClick={() => updater.check()}>
-      Check for updates
+      {t("settings.checkUpdates")}
     </StyledButton>
   );
 }
@@ -70,15 +71,13 @@ function UpdateSettings() {
 
   return (
     <section className="settings-section">
-      <h2>Updates</h2>
+      <h2>{t("settings.updates")}</h2>
 
       <label className="settings-row">
         <div className="settings-row-text">
-          <span className="settings-row-title">Automatic updates</span>
+          <span className="settings-row-title">{t("settings.autoUpdate")}</span>
           <span className="settings-row-description">
-            {update.canInstall
-              ? "Download new versions in the background and install them when you quit."
-              : "Check for new versions when the app starts."}
+            {update.canInstall ? t("settings.autoUpdateInstall") : t("settings.autoUpdateCheck")}
           </span>
         </div>
         <input
@@ -93,7 +92,7 @@ function UpdateSettings() {
 
       <div className="settings-row static">
         <div className="settings-row-text">
-          <span className="settings-row-title">Software update</span>
+          <span className="settings-row-title">{t("settings.softwareUpdate")}</span>
           <span className="settings-row-description" aria-live="polite">
             {getUpdateDescription(update)}
           </span>
@@ -109,17 +108,32 @@ function SettingsMenu() {
 
   return (
     <div className="settings-content">
-      <h1>App settings</h1>
+      <h1>{t("settings.title")}</h1>
 
       <section className="settings-section">
-        <h2>General</h2>
+        <h2>{t("settings.general")}</h2>
 
         <label className="settings-row">
           <div className="settings-row-text">
-            <span className="settings-row-title">Advanced mode</span>
-            <span className="settings-row-description">
-              Choose which handler to use for each format.
-            </span>
+            <span className="settings-row-title">{t("language.label")}</span>
+          </div>
+          <select
+            className="settings-select"
+            value={CurrentLang.value}
+            onChange={(ev) => (CurrentLang.value = ev.currentTarget.value as Lang)}
+          >
+            {LANGUAGES.map((lang) => (
+              <option key={lang.id} value={lang.id}>
+                {lang.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="settings-row">
+          <div className="settings-row-text">
+            <span className="settings-row-title">{t("settings.advanced")}</span>
+            <span className="settings-row-description">{t("settings.advancedDesc")}</span>
           </div>
           <input
             type="checkbox"
@@ -142,18 +156,18 @@ export default function SettingsButton() {
   useEffect(() => {
     if (!btnRef.current) return;
     const instance = tippy(btnRef.current, {
-      content: "App settings",
+      content: t("settings.title"),
       placement: "bottom",
       delay: [300, 0],
     });
     return () => instance.destroy();
-  }, []);
+  }, [CurrentLang.value]);
 
   // oxlint-disable-next-line unicorn/consistent-function-scoping
   const onSettingsClick = () => {
     PopupData.value = {
       dismissible: true,
-      buttonText: "Done",
+      buttonText: () => t("common.done"),
       className: "settings-popup",
       contents: <SettingsMenu />,
     };
@@ -164,7 +178,7 @@ export default function SettingsButton() {
     <StyledButton
       buttonRef={btnRef}
       variant={ButtonVariant.Icon}
-      ariaLabel="App settings"
+      ariaLabel={t("settings.title")}
       onClick={onSettingsClick}
     >
       <Settings size={18} aria-hidden="true" />

@@ -2,6 +2,7 @@ import type { CategoryType } from "src/Formats";
 import FileIcon from "src/ui/components/FileIcon";
 import { X } from "lucide-preact";
 import "./index.css";
+import { t } from "src/ui/i18n";
 
 interface FileInfoBadgeProps {
   fileName: string;
@@ -35,7 +36,7 @@ export default function FileInfoBadge({
     <div className={`file-info-badge ${className}`}>
       <FileIcon extension={ext} mimeType={mimeType} category={category} size={16} />
       <div className="file-info-text">
-        <span className="file-info-name">{fileName}</span>
+        <bdi className="file-info-name">{fileName}</bdi>
         {typeof fileSize === "number" && (
           <span className="file-info-size">{formatFileSize(fileSize)}</span>
         )}
@@ -47,7 +48,7 @@ export default function FileInfoBadge({
             e.stopPropagation();
             onRemove();
           }}
-          aria-label="Remove file"
+          aria-label={t("conv.removeFile")}
         >
           <X size={14} />
         </button>
