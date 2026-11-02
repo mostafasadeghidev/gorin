@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#064e3b" />
+      <stop offset="0.55" stop-color="#047857" />
+      <stop offset="1" stop-color="#0b8a5f" />
+    </linearGradient>
+    <linearGradient id="badge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34d399" />
+      <stop offset="1" stop-color="#047857" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.2" r="0.6">
+      <stop offset="0" stop-color="#3ccf91" stop-opacity="0.45" />
+      <stop offset="1" stop-color="#3ccf91" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.6" fill="#ffffff" fill-opacity="0.07" />
+    </pattern>
+  </defs>
+
+  <rect width="1280" height="420" rx="28" fill="url(#bg)" />
+  <rect width="1280" height="420" rx="28" fill="url(#dots)" />
+  <rect width="1280" height="420" rx="28" fill="url(#glow)" />
+
+  <!-- Floating format chips -->
+  <g font-family="ui-monospace, 'Cascadia Code', Consolas, monospace" font-size="22" font-weight="700" text-anchor="middle">
+    <g transform="translate(905 92) rotate(-8)">
+      <rect x="-58" y="-26" width="116" height="52" rx="14" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-opacity="0.25" />
+      <text y="8" fill="#ecfdf5">HEIC</text>
+    </g>
+    <g transform="translate(1130 150) rotate(7)">
+      <rect x="-50" y="-26" width="100" height="52" rx="14" fill="#f5b301" />
+      <text y="8" fill="#052e1c">JPG</text>
+    </g>
+    <g transform="translate(980 222) rotate(4)">
+      <rect x="-50" y="-26" width="100" height="52" rx="14" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-opacity="0.25" />
+      <text y="8" fill="#ecfdf5">MP4</text>
+    </g>
+    <g transform="translate(1160 280) rotate(-6)">
+      <rect x="-50" y="-26" width="100" height="52" rx="14" fill="#ffffff" fill-opacity="0.92" />
+      <text y="8" fill="#047857">GIF</text>
+    </g>
+    <g transform="translate(900 330) rotate(-3)">
+      <rect x="-50" y="-26" width="100" height="52" rx="14" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-opacity="0.25" />
+      <text y="8" fill="#ecfdf5">PDF</text>
+    </g>
+    <g transform="translate(1060 360) rotate(5)">
+      <rect x="-50" y="-26" width="100" height="52" rx="14" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-opacity="0.25" />
+      <text y="8" fill="#ecfdf5">MP3</text>
+    </g>
+  </g>
+  <g fill="none" stroke="#f5b301" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 10" opacity="0.8">
+    <path d="M960 100 C 1040 70, 1090 100, 1080 130" />
+    <path d="M1030 222 C 1100 220, 1120 250, 1110 268" />
+  </g>
+
+  <!-- Logo badge -->
+  <g transform="translate(96 108)">
+    <rect width="136" height="136" rx="34" fill="url(#badge)" stroke="#ffffff" stroke-opacity="0.3" stroke-width="2" />
+    <circle cx="104" cy="32" r="12.5" fill="#f5b301" />
+    <g transform="translate(27 27) scale(3.4)" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+      <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+      <path d="M16 16h5v5" />
+    </g>
+  </g>
+
+  <g font-family="'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif">
+    <text x="268" y="190" font-size="92" font-weight="800" fill="#ffffff" letter-spacing="-2">Gorin</text>
+    <text x="272" y="238" font-size="30" font-weight="600" fill="#a7f3d0" font-family="Tahoma, 'Segoe UI', sans-serif">گۆڕین · گورین</text>
+    <text x="98" y="322" font-size="30" font-weight="600" fill="#ecfdf5">Private file converter that runs in your browser</text>
+    <text x="98" y="362" font-size="21" fill="#a7f3d0">Hundreds of formats · Nothing is uploaded · Free &amp; open source</text>
+  </g>
+</svg>
