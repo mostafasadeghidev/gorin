@@ -3,9 +3,16 @@ name: Build Electron Releases
 on:
   push:
     branches: ["master"]
+    paths-ignore:
+      - "**.md"
+      - ".github/assets/**"
 
 permissions:
   contents: write
+
+concurrency:
+  group: electron-release
+  cancel-in-progress: true
 
 jobs:
   build-electron:
