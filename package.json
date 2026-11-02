@@ -147,7 +147,13 @@
       "!node_modules/**/*"
     ],
     "win": {
-      "target": "nsis"
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "portable": {
+      "artifactName": "gorin-${os}-${arch}-portable.${ext}"
     },
     "mac": {
       "target": [

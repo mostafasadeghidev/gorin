@@ -56,8 +56,10 @@ function createWindow() {
 
 const UPDATE_SETTINGS_PATH = path.join(app.getPath("userData"), "update-settings.json");
 
-// Squirrel.Mac refuses to install unsigned updates, so macOS only links to the release
-const CAN_INSTALL_UPDATES = process.platform !== "darwin";
+// Squirrel.Mac refuses to install unsigned updates, and the portable Windows build can't replace
+// itself, so both only link to the release
+const IS_PORTABLE = Boolean(process.env.PORTABLE_EXECUTABLE_FILE);
+const CAN_INSTALL_UPDATES = process.platform !== "darwin" && !IS_PORTABLE;
 
 let updateState = {
   status: "idle",
