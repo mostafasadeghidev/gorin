@@ -367,7 +367,7 @@ const ckb: Record<MessageKey, Message> = {
   "footer.source": "سەرچاوە",
   "language.label": "زمان",
   "footer.madeBy": "دروستکراوە لەلایەن",
-  "author.name": "مصطفی صادقی",
+  "author.name": "مستەفا سادەقی",
   "pwa.install": "دامەزراندنی بەرنامە",
 
   "conv.addFiles": "زیادکردنی فایلی زیاتر",
