@@ -105,6 +105,21 @@ test(
 );
 
 test(
+  "png + png → jpeg gives one output per image",
+  async () => {
+    const conversion = await attemptConversion(
+      ["colors_50x50.png", "colors_50x50.png"],
+      Formats.PNG,
+      Formats.JPEG,
+    );
+
+    expect(conversion).toBeTruthy();
+    expect(conversion!.files.length).toBe(2);
+  },
+  { timeout: 60000 },
+);
+
+test(
   "png → svg",
   async () => {
     const conversion = await attemptConversion(["colors_50x50.png"], Formats.PNG, Formats.SVG);
