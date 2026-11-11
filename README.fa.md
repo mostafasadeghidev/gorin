@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://mostafasadeghidev.github.io/gorin/"><img src="https://img.shields.io/badge/Open_Gorin-0b8a5f?style=for-the-badge&logo=googlechrome&logoColor=white" alt="باز کردن گورین"></a>
-  <a href="https://github.com/mostafasadeghidev/gorin/releases/tag/latest"><img src="https://img.shields.io/badge/Desktop_app-f5b301?style=for-the-badge&logo=github&logoColor=052e1c&labelColor=f5b301" alt="برنامهٔ دسکتاپ"></a>
+  <a href="https://github.com/mostafasadeghidev/gorin/releases/latest"><img src="https://img.shields.io/badge/Desktop_app-f5b301?style=for-the-badge&logo=github&logoColor=052e1c&labelColor=f5b301" alt="برنامهٔ دسکتاپ"></a>
 </p>
 
 <div dir="rtl">
@@ -57,13 +57,13 @@
 
 ## 💻 برنامهٔ دسکتاپ
 
-برنامه‌ای می‌خواهی که کاملاً آفلاین کار کند؟ از **[صفحهٔ نسخه‌ها](https://github.com/mostafasadeghidev/gorin/releases/tag/latest)** دانلودش کن:
+برنامه‌ای می‌خواهی که کاملاً آفلاین کار کند؟ از **[صفحهٔ نسخه‌ها](https://github.com/mostafasadeghidev/gorin/releases/latest)** دانلودش کن:
 
 | سیستم‌عامل | دانلود                                                                                                                                                                                                   | توضیح                                                      |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| 🪟 ویندوز  | [نصبی](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-win-x64.exe) · [پرتابل](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-win-x64-portable.exe) | نسخهٔ نصبی خودش به‌روز می‌شود؛ نسخهٔ پرتابل نصب لازم ندارد |
-| 🍎 مک      | [DMG](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-mac-arm64.dmg)                                                                                                           | مک‌های اپل سیلیکون (M1 به بعد)                             |
-| 🐧 لینوکس  | [AppImage](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-linux-x86_64.AppImage)                                                                                              | اجازهٔ اجرا بده و بازش کن                                  |
+| 🪟 ویندوز  | [نصبی](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-win-x64.exe) · [پرتابل](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-win-x64-portable.exe) | نسخهٔ نصبی خودش به‌روز می‌شود؛ نسخهٔ پرتابل نصب لازم ندارد |
+| 🍎 مک      | [DMG](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-mac-arm64.dmg)                                                                                                           | مک‌های اپل سیلیکون (M1 به بعد)                             |
+| 🐧 لینوکس  | [AppImage](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-linux-x86_64.AppImage)                                                                                              | اجازهٔ اجرا بده و بازش کن                                  |
 
 > ⚠️ **توجه:** برنامه‌ها هنوز امضای دیجیتال ندارند. در ویندوز روی **More info** و بعد **Run anyway** بزن. در مک روی برنامه راست‌کلیک کن و **Open** را بزن.
 
@@ -76,7 +76,7 @@
 ۲. دستور `bun install` را اجرا کن.<br>
 ۳. با `bun run dev` وابستگی‌ها آماده می‌شوند و سرور توسعه بالا می‌آید.
 
-برای نسخهٔ نهایی، `bun run build` و بعد `bun run cache:build` را اجرا کن و پوشهٔ `dist/` را با هر سرور HTTP ساده‌ای سرو کن. با هر پوش روی `master`، سایت روی GitHub Pages منتشر و برنامه‌های دسکتاپ خودکار ساخته می‌شوند.
+برای نسخهٔ نهایی، `bun run build` و بعد `bun run cache:build` را اجرا کن و پوشهٔ `dist/` را با هر سرور HTTP ساده‌ای سرو کن. با هر پوش روی `master`، سایت روی GitHub Pages منتشر می‌شود. برای انتشارِ نسخهٔ جدیدِ برنامه‌های دسکتاپ، یادداشتِ نسخه را در `.github/release-notes/vX.Y.Z.md` بنویس و برچسبِ `vX.Y.Z` را پوش کن.
 
 </details>
 

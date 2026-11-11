@@ -1,6 +1,6 @@
 {
   "name": "gorin",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Private file converter that runs in your browser",
   "homepage": "https://mostafasadeghidev.github.io/gorin/",
@@ -139,7 +139,7 @@
     "publish": [
       {
         "provider": "generic",
-        "url": "https://github.com/mostafasadeghidev/gorin/releases/download/latest"
+        "url": "https://github.com/mostafasadeghidev/gorin/releases/latest/download"
       }
     ],
     "directories": {

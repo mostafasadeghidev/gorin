@@ -15,7 +15,7 @@ const fs = require("fs");
 
 // Not __dirname, which gets hardcoded to the build machine's path when bundled
 const DIST_PATH = path.join(app.getAppPath(), "dist");
-const RELEASE_URL = "https://github.com/mostafasadeghidev/gorin/releases/tag/latest";
+const RELEASE_URL = "https://github.com/mostafasadeghidev/gorin/releases/latest";
 
 protocol.registerSchemesAsPrivileged([
   {

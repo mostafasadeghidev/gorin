@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://mostafasadeghidev.github.io/gorin/"><img src="https://img.shields.io/badge/Open_Gorin-0b8a5f?style=for-the-badge&logo=googlechrome&logoColor=white" alt="کردنەوەی گۆڕین"></a>
-  <a href="https://github.com/mostafasadeghidev/gorin/releases/tag/latest"><img src="https://img.shields.io/badge/Desktop_app-f5b301?style=for-the-badge&logo=github&logoColor=052e1c&labelColor=f5b301" alt="بەرنامەی دێسکتۆپ"></a>
+  <a href="https://github.com/mostafasadeghidev/gorin/releases/latest"><img src="https://img.shields.io/badge/Desktop_app-f5b301?style=for-the-badge&logo=github&logoColor=052e1c&labelColor=f5b301" alt="بەرنامەی دێسکتۆپ"></a>
 </p>
 
 <div dir="rtl">
@@ -57,13 +57,13 @@
 
 ## 💻 بەرنامەی دێسکتۆپ
 
-بەرنامەیەکت دەوێت کە بە تەواوی بێ ئینتەرنێت کار بکات؟ لە **[پەڕەی وەشانەکان](https://github.com/mostafasadeghidev/gorin/releases/tag/latest)** دایبگرە:
+بەرنامەیەکت دەوێت کە بە تەواوی بێ ئینتەرنێت کار بکات؟ لە **[پەڕەی وەشانەکان](https://github.com/mostafasadeghidev/gorin/releases/latest)** دایبگرە:
 
 | سیستەم    | داگرتن                                                                                                                                                                                                           | تێبینی                                                                         |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 🪟 ویندۆز | [دامەزراندن](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-win-x64.exe) · [گوازراوە](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-win-x64-portable.exe) | وەشانی دامەزراندن خۆی نوێ دەکاتەوە؛ وەشانی گوازراوە پێویستی بە دامەزراندن نییە |
-| 🍎 ماک    | [DMG](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-mac-arm64.dmg)                                                                                                                   | ماکەکانی Apple Silicon (M1 و نوێتر)                                            |
-| 🐧 لینوکس | [AppImage](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-linux-x86_64.AppImage)                                                                                                      | ڕێگەی جێبەجێکردنی پێ بدە و بیکەرەوە                                            |
+| 🪟 ویندۆز | [دامەزراندن](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-win-x64.exe) · [گوازراوە](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-win-x64-portable.exe) | وەشانی دامەزراندن خۆی نوێ دەکاتەوە؛ وەشانی گوازراوە پێویستی بە دامەزراندن نییە |
+| 🍎 ماک    | [DMG](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-mac-arm64.dmg)                                                                                                                   | ماکەکانی Apple Silicon (M1 و نوێتر)                                            |
+| 🐧 لینوکس | [AppImage](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-linux-x86_64.AppImage)                                                                                                      | ڕێگەی جێبەجێکردنی پێ بدە و بیکەرەوە                                            |
 
 > ⚠️ **ئاگاداری:** بەرنامەکان هێشتا واژۆی دیجیتاڵیان نییە. لە ویندۆزدا **More info** و پاشان **Run anyway** دابگرە. لە ماکدا کرتەی ڕاست لە بەرنامەکە بکە و **Open** هەڵبژێرە.
 
@@ -76,7 +76,7 @@
 ٢. فەرمانی `bun install` جێبەجێ بکە.<br>
 ٣. بە `bun run dev` پێداویستییەکان ئامادە دەبن و ڕاژەکاری گەشەپێدان دەست پێدەکات.
 
-بۆ وەشانی کۆتایی، `bun run build` و پاشان `bun run cache:build` جێبەجێ بکە و بوخچەی `dist/` بە هەر ڕاژەکارێکی HTTPی سادە بڵاو بکەرەوە. بە هەر push ێک بۆ `master`، ماڵپەڕەکە لەسەر GitHub Pages بڵاو دەبێتەوە و بەرنامەکانی دێسکتۆپ بە شێوەی خۆکار دروست دەکرێنەوە.
+بۆ وەشانی کۆتایی، `bun run build` و پاشان `bun run cache:build` جێبەجێ بکە و بوخچەی `dist/` بە هەر ڕاژەکارێکی HTTPی سادە بڵاو بکەرەوە. بە هەر push ێک بۆ `master`، ماڵپەڕەکە لەسەر GitHub Pages بڵاو دەبێتەوە. بۆ بڵاوکردنەوەی وەشانێکی نوێی بەرنامەکانی دێسکتۆپ، تێبینییەکانی وەشان لە `.github/release-notes/vX.Y.Z.md` بنووسە و تاگی `vX.Y.Z` push بکە.
 
 </details>
 

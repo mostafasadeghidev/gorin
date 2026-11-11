@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://mostafasadeghidev.github.io/gorin/"><img src="https://img.shields.io/badge/Open_Gorin-0b8a5f?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open Gorin"></a>
-  <a href="https://github.com/mostafasadeghidev/gorin/releases/tag/latest"><img src="https://img.shields.io/badge/Desktop_app-f5b301?style=for-the-badge&logo=github&logoColor=052e1c&labelColor=f5b301" alt="Desktop app"></a>
+  <a href="https://github.com/mostafasadeghidev/gorin/releases/latest"><img src="https://img.shields.io/badge/Desktop_app-f5b301?style=for-the-badge&logo=github&logoColor=052e1c&labelColor=f5b301" alt="Desktop app"></a>
 </p>
 
 <p align="center">
@@ -62,13 +62,13 @@
 
 ## 💻 Desktop app
 
-Prefer an app that works fully offline? Download it from the **[releases page](https://github.com/mostafasadeghidev/gorin/releases/tag/latest)**:
+Prefer an app that works fully offline? Download it from the **[releases page](https://github.com/mostafasadeghidev/gorin/releases/latest)**:
 
 | System     | Download                                                                                                                                                                                                        | Notes                                                               |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| 🪟 Windows | [Installer](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-win-x64.exe) · [Portable](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-win-x64-portable.exe) | The installer updates itself; the portable version needs no install |
-| 🍎 macOS   | [DMG](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-mac-arm64.dmg)                                                                                                                  | Apple Silicon (M1 and newer)                                        |
-| 🐧 Linux   | [AppImage](https://github.com/mostafasadeghidev/gorin/releases/download/latest/gorin-linux-x86_64.AppImage)                                                                                                     | Make it executable, then run it                                     |
+| 🪟 Windows | [Installer](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-win-x64.exe) · [Portable](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-win-x64-portable.exe) | The installer updates itself; the portable version needs no install |
+| 🍎 macOS   | [DMG](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-mac-arm64.dmg)                                                                                                                  | Apple Silicon (M1 and newer)                                        |
+| 🐧 Linux   | [AppImage](https://github.com/mostafasadeghidev/gorin/releases/latest/download/gorin-linux-x86_64.AppImage)                                                                                                     | Make it executable, then run it                                     |
 
 > [!NOTE]
 > The apps aren’t code-signed yet. On Windows, choose **More info → Run anyway**. On macOS, right-click the app and choose **Open**.
@@ -82,7 +82,7 @@ Prefer an app that works fully offline? Download it from the **[releases page](h
 2. Run `bun install`.
 3. Run `bun run dev` to prepare dependencies and start the dev server.
 
-For a production build, run `bun run build` and then `bun run cache:build`, and serve the `dist/` folder with any static HTTP server. Pushing to `master` deploys the site to GitHub Pages and rebuilds the desktop apps automatically.
+For a production build, run `bun run build` and then `bun run cache:build`, and serve the `dist/` folder with any static HTTP server. Pushing to `master` deploys the site to GitHub Pages. To release the desktop apps, add release notes in `.github/release-notes/vX.Y.Z.md` and push a `vX.Y.Z` tag.
 
 </details>
 

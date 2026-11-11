@@ -1,18 +1,17 @@
 name: Build Electron Releases
 
+# Push a version tag (e.g. v1.2.0) to build the desktop apps and publish them as a release.
+# The release notes come from .github/release-notes/<tag>.md
 on:
   push:
-    branches: ["master"]
-    paths-ignore:
-      - "**.md"
-      - ".github/assets/**"
+    tags: ["v*.*.*"]
 
 permissions:
   contents: write
 
 concurrency:
-  group: electron-release
-  cancel-in-progress: true
+  group: electron-release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   # Don't publish desktop builds of a commit that fails lint or the conversion tests
@@ -24,6 +23,14 @@ jobs:
         uses: actions/checkout@v6
         with:
           submodules: recursive
+
+      - name: Check release notes
+        run: |
+          notes=".github/release-notes/${GITHUB_REF_NAME}.md"
+          if [ ! -s "$notes" ]; then
+            echo "::error::Missing release notes: $notes"
+            exit 1
+          fi
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -86,17 +93,17 @@ jobs:
         run: bun run build:check
 
       - name: Set version
-        run: bun pm pkg set version=0.0.${{ github.run_number }}
+        run: bun pm pkg set version=${GITHUB_REF_NAME#v}
 
       - name: Build Distribution for ${{ matrix.platform }}
         run: bun run desktop:dist:${{ matrix.platform }}
 
       - name: Publish GitHub Release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest
-          name: Rolling Release
+          tag_name: ${{ github.ref_name }}
+          name: Gorin ${{ github.ref_name }}
+          body_path: .github/release-notes/${{ github.ref_name }}.md
           prerelease: false
           make_latest: true
           files: |
@@ -108,4 +115,3 @@ jobs:
             release/*.deb
             release/*.blockmap
             release/latest*.yml
-          body: "This release contains offline desktop builds of Gorin, built from the latest commit on the `master` branch."
