@@ -87,7 +87,7 @@
 docker compose -f docker/docker-compose.yml -f docker/docker-compose.override.yml up --build -d
 ```
 
-ماڵپەڕەکە لەسەر `http://localhost:8080/convert/` بەردەست دەبێت.
+ماڵپەڕەکە لەسەر `http://localhost:8080/gorin/` بەردەست دەبێت.
 
 </details>
 

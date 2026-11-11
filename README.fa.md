@@ -87,7 +87,7 @@
 docker compose -f docker/docker-compose.yml -f docker/docker-compose.override.yml up --build -d
 ```
 
-سایت روی `http://localhost:8080/convert/` در دسترس است.
+سایت روی `http://localhost:8080/gorin/` در دسترس است.
 
 </details>
 

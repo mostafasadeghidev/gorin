@@ -93,7 +93,7 @@ For a production build, run `bun run build` and then `bun run cache:build`, and 
 docker compose -f docker/docker-compose.yml -f docker/docker-compose.override.yml up --build -d
 ```
 
-The site will be available at `http://localhost:8080/convert/`.
+The site will be available at `http://localhost:8080/gorin/`.
 
 </details>
 

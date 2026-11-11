@@ -1,6 +1,6 @@
 services:
-  convert:
-    image: ghcr.io/${GITHUB_REPOSITORY:-mostafasadeghidev/gorin}:${CONVERT_IMAGE_TAG:-latest}
+  gorin:
+    image: ${GORIN_IMAGE:-gorin:latest}
     ports:
       - "8080:80"
     restart: unless-stopped
