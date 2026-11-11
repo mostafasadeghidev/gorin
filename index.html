@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <script>
-      // we shouldnt be on /convert but some weird servers may allow us there
+      // we shouldnt be on /gorin but some weird servers may allow us there
       if (!location.pathname.endsWith("/") && !location.pathname.endsWith(".html")) {
         location.replace(location.pathname + "/" + location.search + location.hash);
       }
@@ -16,16 +16,27 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <title>Gorin — private file converter</title>
 
-    <meta name="url" content="https://mostafasadeghidev.github.io/gorin/" />
-    <meta name="og:url" content="https://mostafasadeghidev.github.io/gorin/" />
-    <meta name="og:title" content="Gorin" />
-    <meta name="og:site_name" content="Gorin" />
     <meta
-      name="og:description"
-      content="Convert almost any file to almost any format, privately and right in your browser."
+      name="description"
+      content="Convert almost any file to almost any format, privately and right in your browser. Nothing is uploaded."
     />
     <meta name="theme-color" content="#0b8a5f" />
-    <meta name="og:type" content="website" />
+    <link rel="canonical" href="https://mostafasadeghidev.github.io/gorin/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mostafasadeghidev.github.io/gorin/" />
+    <meta property="og:site_name" content="Gorin" />
+    <meta property="og:title" content="Gorin — private file converter" />
+    <meta
+      property="og:description"
+      content="Convert almost any file to almost any format, privately and right in your browser. Nothing is uploaded."
+    />
+    <meta property="og:image" content="https://mostafasadeghidev.github.io/gorin/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="640" />
+    <meta property="og:image:alt" content="Gorin — private file converter, right in your browser" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
 
   <body>
