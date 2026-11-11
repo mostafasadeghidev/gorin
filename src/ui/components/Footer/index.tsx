@@ -1,6 +1,8 @@
 import "./index.css";
 import { t, type MessageKey } from "src/ui/i18n";
 
+export const AUTHOR_URL = "https://github.com/mostafasadeghidev";
+
 interface FooterProps {
   loadingText?: MessageKey;
 }
@@ -12,6 +14,12 @@ export default function Footer({ loadingText }: FooterProps) {
         <bdi className="footer-link-text" dir="ltr">
           &copy; 2026 Gorin
         </bdi>
+      </div>
+      <div className="footer-item footer-author">
+        <span>{t("footer.madeBy")}</span>
+        <a href={AUTHOR_URL} target="_blank" rel="noopener" className="footer-author-link">
+          {t("author.name")}
+        </a>
       </div>
       {loadingText && (
         <div className="footer-item footer-loading">

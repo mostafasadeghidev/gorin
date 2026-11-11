@@ -25,6 +25,16 @@ footer {
       margin-inline-end: auto;
     }
 
+    &.footer-author .footer-author-link {
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover {
+        color: var(--primary);
+      }
+    }
+
     &.footer-loading {
       font-style: italic;
       opacity: 0.7;

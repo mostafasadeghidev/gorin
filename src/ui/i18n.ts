@@ -86,6 +86,9 @@ const en = {
 
   "footer.source": "Source",
   "language.label": "Language",
+  "footer.madeBy": "Made by",
+  "author.name": "Mostafa Sadeghi",
+  "pwa.install": "Install app",
 
   "conv.addFiles": "Add more files",
   "conv.removeFile": "Remove file",
@@ -225,6 +228,9 @@ const fa: Record<MessageKey, Message> = {
 
   "footer.source": "کدِ منبع",
   "language.label": "زبان",
+  "footer.madeBy": "ساختهٔ",
+  "author.name": "مصطفی صادقی",
+  "pwa.install": "نصبِ برنامه",
 
   "conv.addFiles": "افزودنِ فایلِ بیشتر",
   "conv.removeFile": "حذفِ فایل",
@@ -360,6 +366,9 @@ const ckb: Record<MessageKey, Message> = {
 
   "footer.source": "سەرچاوە",
   "language.label": "زمان",
+  "footer.madeBy": "دروستکراوە لەلایەن",
+  "author.name": "مصطفی صادقی",
+  "pwa.install": "دامەزراندنی بەرنامە",
 
   "conv.addFiles": "زیادکردنی فایلی زیاتر",
   "conv.removeFile": "لابردنی فایل",

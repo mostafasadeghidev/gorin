@@ -5,6 +5,7 @@ import tippy from "tippy.js";
 import { useEffect, useRef } from "preact/hooks";
 import StyledButton, { ButtonVariant } from "src/ui/components/StyledButton";
 import { CurrentLang, t } from "src/ui/i18n";
+import { AUTHOR_URL } from "src/ui/components/Footer";
 
 function HelpContent() {
   return (
@@ -32,6 +33,17 @@ function HelpContent() {
         <h2>{t("help.advancedTitle")}</h2>
         <p>{t("help.advancedText")}</p>
       </div>
+
+      <p className="help-credit">
+        {t("footer.madeBy")}{" "}
+        <a href={AUTHOR_URL} target="_blank" rel="noopener">
+          {t("author.name")}
+        </a>
+        {" · "}
+        <a href={AUTHOR_URL} target="_blank" rel="noopener">
+          <bdi dir="ltr">github.com/mostafasadeghidev</bdi>
+        </a>
+      </p>
     </div>
   );
 }

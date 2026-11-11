@@ -188,6 +188,14 @@ function setupUpdater() {
   if (autoUpdate) checkForUpdates(false);
 }
 
+app.setAboutPanelOptions({
+  applicationName: "Gorin",
+  applicationVersion: app.getVersion(),
+  copyright: "Copyright © 2026 Mostafa Sadeghi",
+  authors: ["Mostafa Sadeghi"],
+  website: "https://github.com/mostafasadeghidev",
+});
+
 app.whenReady().then(() => {
   // Handler: Map every app:// request to local file on disk
   protocol.handle("app", async (request) => {

@@ -2,8 +2,12 @@
   "name": "gorin",
   "version": "0.0.0",
   "private": true,
-  "description": "Truly universal browser-based file converter",
-  "author": "PortalRunner",
+  "description": "Private file converter that runs in your browser",
+  "homepage": "https://mostafasadeghidev.github.io/gorin/",
+  "author": {
+    "name": "Mostafa Sadeghi",
+    "url": "https://github.com/mostafasadeghidev"
+  },
   "type": "module",
   "main": "dist-electron/main.cjs",
   "scripts": {
@@ -129,6 +133,7 @@
   },
   "build": {
     "appId": "io.github.mostafasadeghidev.gorin",
+    "copyright": "Copyright © 2026 Mostafa Sadeghi",
     "executableName": "gorin",
     "artifactName": "gorin-${os}-${arch}.${ext}",
     "publish": [
