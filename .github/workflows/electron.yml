@@ -93,10 +93,40 @@ jobs:
         run: bun run build:check
 
       - name: Set version
+        shell: bash
         run: bun pm pkg set version=${GITHUB_REF_NAME#v}
 
       - name: Build Distribution for ${{ matrix.platform }}
         run: bun run desktop:dist:${{ matrix.platform }}
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.platform }}
+          if-no-files-found: error
+          path: |
+            release/*.exe
+            release/*.dmg
+            release/*.AppImage
+            release/*.zip
+            release/*.blockmap
+            release/latest*.yml
+
+  # Publish only once every platform built, so a release is never missing an app
+  publish:
+    needs: build-electron
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Download builds
+        uses: actions/download-artifact@v4
+        with:
+          pattern: desktop-*
+          path: release
+          merge-multiple: true
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
@@ -106,12 +136,5 @@ jobs:
           body_path: .github/release-notes/${{ github.ref_name }}.md
           prerelease: false
           make_latest: true
-          files: |
-            release/*.exe
-            release/*.dmg
-            release/*.AppImage
-            release/*.zip
-            release/*.snap
-            release/*.deb
-            release/*.blockmap
-            release/latest*.yml
+          fail_on_unmatched_files: true
+          files: release/*
