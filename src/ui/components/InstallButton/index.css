@@ -1,0 +1,16 @@
+.install-button.styled-button {
+  height: 36px;
+  padding: 0 0.8rem;
+  border-radius: 10px;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  border-color: var(--primary-transparent);
+
+  &:hover {
+    color: var(--text-on-primary);
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+}

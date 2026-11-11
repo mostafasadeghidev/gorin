@@ -5,6 +5,7 @@ import { goToUploadHome, SelectedFiles } from "src/main";
 import { Files, Layers, LockKeyhole, Sparkles, Upload } from "lucide-preact";
 import tippy from "tippy.js";
 import { CurrentLang, t } from "src/ui/i18n";
+import InstallButton from "src/ui/components/InstallButton";
 import LanguageSelect from "src/ui/components/LanguageSelect";
 
 import Logo from "src/ui/components/Logo";
@@ -137,7 +138,8 @@ export default function UploadPage() {
         </ul>
 
         <div className="upload-card-actions">
-          <LanguageSelect />
+          <InstallButton />
+          <LanguageSelect direction="up" />
           <SettingsButton />
           <HelpButton />
           <StyledButton

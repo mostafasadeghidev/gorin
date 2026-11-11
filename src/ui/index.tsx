@@ -3,6 +3,7 @@ import { render } from "preact";
 import UploadPage from "./pages/Upload";
 import ConversionPage from "./pages/Conversion";
 import { initTheme } from "./ThemeStore";
+import "./pwa";
 import Popup from "./components/Popup";
 import FullPageDropOverlay from "./components/FullPageDropOverlay";
 import { CurrentPage, Pages } from "./AppState";
